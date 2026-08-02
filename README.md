@@ -2,6 +2,8 @@
 
 Living, public-safe map of Cyril’s personal AI ecosystem: conversation surfaces, code harnesses, personal agents, memory systems, domain adapters and infrastructure.
 
+Clicking any component highlights its direct relationships and dims the rest of the graph. The same interaction is available from the generated catalogue and by keyboard.
+
 The published site is generated from [`data/architecture.json`](data/architecture.json). The output is a standalone HTML document with inline CSS, inline SVG and embedded brand marks.
 
 ## Local development
@@ -21,6 +23,8 @@ Open `dist/index.html` in a browser.
 4. Open a pull request. GitHub Pages is redeployed after the change reaches `main`.
 
 The data validator rejects duplicate identifiers, dangling edges and accidental publication of common private-data patterns.
+
+Brand assets for Hermes Agent, Docmost and rabbit are kept locally in `assets/` from their official projects/sites. Other marks are generated from Simple Icons and LobeHub Icons at build time.
 
 ## Status vocabulary
 

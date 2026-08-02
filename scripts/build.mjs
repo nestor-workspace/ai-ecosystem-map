@@ -1,0 +1,417 @@
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import * as simpleIcons from "simple-icons";
+
+const root = new URL("../", import.meta.url);
+const architecture = JSON.parse(await readFile(new URL("data/architecture.json", root), "utf8"));
+const openClawLogo = (
+  await readFile(new URL("assets/openclaw.png", root))
+).toString("base64");
+
+const lobeIconFiles = {
+  openai: "openai.svg",
+  claude: "claude-color.svg",
+  claudecode: "claudecode-color.svg",
+};
+
+const lobeIcons = new Map(
+  await Promise.all(
+    Object.entries(lobeIconFiles).map(async ([slug, filename]) => {
+      const source = await readFile(
+        new URL(`node_modules/@lobehub/icons-static-svg/icons/${filename}`, root),
+        "utf8",
+      );
+      const content = source
+        .replace(/^<svg[^>]*>/, "")
+        .replace(/<\/svg>\s*$/, "")
+        .replace(/<title>.*?<\/title>/, "");
+      return [slug, { content }];
+    }),
+  ),
+);
+
+const iconsBySlug = new Map(
+  Object.values(simpleIcons)
+    .filter((value) => value && typeof value === "object" && value.slug && value.path)
+    .map((icon) => [icon.slug, icon]),
+);
+
+const escapeHtml = (value) =>
+  String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+const zoneById = new Map(architecture.zones.map((zone) => [zone.id, zone]));
+const nodeById = new Map(architecture.nodes.map((node) => [node.id, node]));
+
+function simpleIcon(slug) {
+  return iconsBySlug.get(slug);
+}
+
+function brandIcon(slug) {
+  const lobeIcon = lobeIcons.get(slug);
+  if (lobeIcon) return { ...lobeIcon, source: "lobe" };
+  const icon = simpleIcon(slug);
+  if (icon) return { content: `<path d="${icon.path}" fill="#${icon.hex}" />`, source: "simple" };
+  return undefined;
+}
+
+function fallbackLetters(node) {
+  return node.iconText || node.label.split(/\s+/).map((part) => part[0]).join("").slice(0, 2);
+}
+
+function renderSvgMark(node, x, y, size = 42) {
+  if (node.iconAsset === "openclaw") {
+    return `<circle cx="${x + size / 2}" cy="${y + size / 2}" r="${size / 2}" class="logo-disc" />
+      <use href="#brand-openclaw" x="${x}" y="${y}" width="${size}" height="${size}" />`;
+  }
+
+  const iconSlugs = node.icons || (node.icon ? [node.icon] : []);
+  const resolved = iconSlugs.map(brandIcon).filter(Boolean).slice(0, 3);
+
+  if (resolved.length > 0) {
+    const markSize = resolved.length === 1 ? size * 0.58 : size * 0.38;
+    const gap = resolved.length === 1 ? 0 : 2;
+    const total = resolved.length * markSize + (resolved.length - 1) * gap;
+    const startX = x + (size - total) / 2;
+    return `<circle cx="${x + size / 2}" cy="${y + size / 2}" r="${size / 2}" class="logo-disc" />${resolved
+      .map(
+        (icon, index) =>
+          `<svg x="${startX + index * (markSize + gap)}" y="${y + (size - markSize) / 2}" width="${markSize}" height="${markSize}" viewBox="0 0 24 24" color="#111111" aria-hidden="true">${icon.content}</svg>`,
+      )
+      .join("")}`;
+  }
+
+  return `<circle cx="${x + size / 2}" cy="${y + size / 2}" r="${size / 2}" fill="${escapeHtml(node.iconColor || "#667085")}" />
+    <text x="${x + size / 2}" y="${y + size / 2 + 5}" text-anchor="middle" class="logo-fallback">${escapeHtml(fallbackLetters(node))}</text>`;
+}
+
+function renderHtmlMark(node) {
+  if (node.iconAsset === "openclaw") {
+    return `<svg class="catalog-logo" viewBox="0 0 640 640" aria-hidden="true"><use href="#brand-openclaw" /></svg>`;
+  }
+  const icon = brandIcon(node.icon) || (node.icons || []).map(brandIcon).find(Boolean);
+  if (icon) {
+    return `<span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true">${icon.content}</svg></span>`;
+  }
+  return `<span class="catalog-logo logo-text" style="--brand:${escapeHtml(node.iconColor || "#667085")}">${escapeHtml(fallbackLetters(node))}</span>`;
+}
+
+function wrapText(text, width, compact = false) {
+  const maxChars = Math.max(16, Math.floor((width - (compact ? 84 : 86)) / 6.2));
+  const words = text.split(/\s+/);
+  const lines = [];
+  let current = "";
+  for (const word of words) {
+    if ((current + " " + word).trim().length > maxChars && current) {
+      lines.push(current);
+      current = word;
+    } else {
+      current = `${current} ${word}`.trim();
+    }
+  }
+  if (current) lines.push(current);
+  if (lines.length <= 2) return lines;
+  const second = `${lines.slice(1).join(" ").slice(0, Math.max(8, maxChars - 1)).trimEnd()}…`;
+  return [lines[0], second];
+}
+
+function renderZone(zone) {
+  return `<g class="zone-group">
+    <rect x="${zone.x}" y="${zone.y}" width="${zone.width}" height="${zone.height}" rx="24" class="zone zone-${zone.kind}" />
+    <text x="${zone.x + 28}" y="${zone.y + 34}" class="zone-title">${escapeHtml(zone.title)}</text>
+    <text x="${zone.x + 28}" y="${zone.y + 56}" class="zone-subtitle">${escapeHtml(zone.subtitle)}</text>
+  </g>`;
+}
+
+function renderNode(node) {
+  const zone = zoneById.get(node.zone);
+  const markSize = node.compact ? 32 : 42;
+  const markX = node.x + 18;
+  const markY = node.y + (node.height - markSize) / 2;
+  const textX = markX + markSize + 16;
+  const labelY = node.compact ? node.y + 23 : node.y + 31;
+  const subtitleLines = wrapText(node.subtitle, node.width, node.compact);
+  const classes = ["node", `node-${zone.kind}`, node.emphasis ? "node-emphasis" : ""]
+    .filter(Boolean)
+    .join(" ");
+  return `<g id="node-${node.id}" class="node-group">
+    <rect x="${node.x}" y="${node.y}" width="${node.width}" height="${node.height}" rx="16" class="${classes}" />
+    ${renderSvgMark(node, markX, markY, markSize)}
+    <text x="${textX}" y="${labelY}" class="node-label">${escapeHtml(node.label)}</text>
+    ${subtitleLines
+      .map(
+        (line, index) =>
+          `<text x="${textX}" y="${labelY + 22 + index * 15}" class="node-subtitle">${escapeHtml(line)}</text>`,
+      )
+      .join("")}
+    <circle cx="${node.x + node.width - 14}" cy="${node.y + 14}" r="4" class="status status-${node.status}" />
+  </g>`;
+}
+
+function anchor(node, side) {
+  const positions = {
+    top: [node.x + node.width / 2, node.y],
+    bottom: [node.x + node.width / 2, node.y + node.height],
+    left: [node.x, node.y + node.height / 2],
+    right: [node.x + node.width, node.y + node.height / 2],
+  };
+  return positions[side];
+}
+
+function defaultSides(from, to) {
+  const dx = to.x + to.width / 2 - (from.x + from.width / 2);
+  const dy = to.y + to.height / 2 - (from.y + from.height / 2);
+  if (Math.abs(dy) > Math.abs(dx) * 0.72) {
+    return dy >= 0 ? ["bottom", "top"] : ["top", "bottom"];
+  }
+  return dx >= 0 ? ["right", "left"] : ["left", "right"];
+}
+
+function bezierPath(start, end, startSide, endSide) {
+  const [sx, sy] = start;
+  const [tx, ty] = end;
+  if ([startSide, endSide].every((side) => side === "top" || side === "bottom")) {
+    const bend = Math.max(45, Math.abs(ty - sy) * 0.46);
+    const c1y = sy + (startSide === "bottom" ? bend : -bend);
+    const c2y = ty + (endSide === "top" ? -bend : bend);
+    return `M ${sx} ${sy} C ${sx} ${c1y}, ${tx} ${c2y}, ${tx} ${ty}`;
+  }
+  const bend = Math.max(45, Math.abs(tx - sx) * 0.46);
+  const c1x = sx + (startSide === "right" ? bend : -bend);
+  const c2x = tx + (endSide === "left" ? -bend : bend);
+  return `M ${sx} ${sy} C ${c1x} ${sy}, ${c2x} ${ty}, ${tx} ${ty}`;
+}
+
+function renderEdge(edge, index) {
+  const from = nodeById.get(edge.from);
+  const to = nodeById.get(edge.to);
+  const [defaultFromSide, defaultToSide] = defaultSides(from, to);
+  const fromSide = edge.fromSide || defaultFromSide;
+  const toSide = edge.toSide || defaultToSide;
+  const start = anchor(from, fromSide);
+  const end = anchor(to, toSide);
+  const path = bezierPath(start, end, fromSide, toSide);
+  const labelX = (start[0] + end[0]) / 2;
+  const labelY = (start[1] + end[1]) / 2 - 7;
+  return `<g class="edge-group edge-${edge.kind}">
+    <path id="edge-${index}" d="${path}" class="edge" marker-end="url(#arrow-${edge.kind})" />
+    ${edge.label ? `<text x="${labelX}" y="${labelY}" text-anchor="middle" class="edge-label">${escapeHtml(edge.label)}</text>` : ""}
+  </g>`;
+}
+
+const markers = ["active", "primary", "planned", "ondemand", "experimental"]
+  .map(
+    (kind) => `<marker id="arrow-${kind}" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 8 4 L 0 8 z" class="arrow arrow-${kind}" />
+    </marker>`,
+  )
+  .join("");
+
+const zoneCatalog = architecture.zones
+  .map((zone) => {
+    const nodes = architecture.nodes.filter((node) => node.zone === zone.id);
+    return `<section class="catalog-section">
+      <div class="catalog-heading">
+        <span class="zone-index zone-index-${zone.kind}">${escapeHtml(zone.title.split(".")[0])}</span>
+        <div><h3>${escapeHtml(zone.title.replace(/^\d+\.\s*/, ""))}</h3><p>${escapeHtml(zone.subtitle)}</p></div>
+      </div>
+      <div class="catalog-grid">${nodes
+        .map(
+          (node) => `<article class="catalog-card">
+            ${renderHtmlMark(node)}
+            <div><h4>${escapeHtml(node.label)}</h4><p>${escapeHtml(node.subtitle)}</p></div>
+            <span class="catalog-status status-${node.status}" title="${escapeHtml(node.status)}"></span>
+          </article>`,
+        )
+        .join("")}</div>
+    </section>`;
+  })
+  .join("");
+
+const html = `<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Cartographie maintenable de l’écosystème IA personnel de Cyril." />
+  <title>${escapeHtml(architecture.meta.title)}</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f1ea;
+      --surface: #fffdf8;
+      --fg: #172033;
+      --muted: #667085;
+      --line: #98a2b3;
+      --input: #e8f1ff;
+      --process: #eee9ff;
+      --storage: #e2f7ee;
+      --external: #fff1d6;
+      --neutral: #edf0f4;
+      --primary: #2563eb;
+      --planned: #8b5cf6;
+      --ondemand: #7c8799;
+      --experimental: #e97616;
+      --shadow: 0 18px 50px rgba(31, 38, 51, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111318;
+        --surface: #181c23;
+        --fg: #edf1f7;
+        --muted: #a7b0c0;
+        --line: #596375;
+        --input: #16243a;
+        --process: #29213e;
+        --storage: #173329;
+        --external: #382b16;
+        --neutral: #252b34;
+        --primary: #6ea8ff;
+        --planned: #b497ff;
+        --ondemand: #a2adbe;
+        --experimental: #ff9d4d;
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; overflow-x: hidden; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { width: min(100vw, 1560px); min-width: 0; margin: 0 auto; padding: 42px 24px 72px; }
+    header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: end; margin-bottom: 24px; }
+    header > * { min-width: 0; }
+    .eyebrow { margin: 0 0 8px; color: var(--planned); font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
+    h1 { margin: 0; overflow-wrap: anywhere; font-size: clamp(34px, 5vw, 64px); line-height: .98; letter-spacing: -.045em; }
+    header .subtitle { max-width: 820px; margin: 18px 0 0; color: var(--muted); font-size: 17px; }
+    .meta { text-align: right; color: var(--muted); font-size: 13px; }
+    .meta strong { display: block; color: var(--fg); font-size: 18px; }
+    .diagram-shell { width: 100%; max-width: 100%; overflow-x: auto; border: 1px solid color-mix(in srgb, var(--line) 42%, transparent); border-radius: 26px; background: var(--surface); box-shadow: var(--shadow); }
+    .diagram { display: block; min-width: 1180px; width: 100%; height: auto; }
+    .zone { stroke: color-mix(in srgb, var(--line) 45%, transparent); stroke-width: 1; }
+    .zone-input { fill: var(--input); }
+    .zone-process { fill: var(--process); }
+    .zone-storage { fill: var(--storage); }
+    .zone-external { fill: var(--external); }
+    .zone-neutral { fill: var(--neutral); }
+    .zone-title { font-size: 16px; font-weight: 780; fill: var(--fg); }
+    .zone-subtitle { font-size: 12px; fill: var(--muted); }
+    .node { stroke: color-mix(in srgb, var(--line) 58%, transparent); stroke-width: 1.2; filter: drop-shadow(0 5px 8px rgba(15, 23, 42, .06)); }
+    .node-input, .node-process, .node-storage, .node-external, .node-neutral { fill: var(--surface); }
+    .node-emphasis { stroke: var(--primary); stroke-width: 2.2; }
+    .node-label { font-size: 15px; font-weight: 760; fill: var(--fg); }
+    .node-subtitle { font-size: 11px; fill: var(--muted); }
+    .logo-disc { fill: #fff; stroke: rgba(15, 23, 42, .08); stroke-width: 1; }
+    .logo-fallback { fill: #fff; font-size: 13px; font-weight: 850; }
+    .status-active { fill: #22a06b; background: #22a06b; }
+    .status-experimental { fill: var(--experimental); background: var(--experimental); }
+    .edge { fill: none; stroke: var(--line); stroke-width: 1.35; opacity: .54; }
+    .edge-primary .edge { stroke: var(--primary); stroke-width: 2.4; opacity: .82; }
+    .edge-planned .edge { stroke: var(--planned); stroke-width: 2.5; stroke-dasharray: 10 7; opacity: .95; }
+    .edge-ondemand .edge { stroke: var(--ondemand); stroke-dasharray: 3 6; opacity: .75; }
+    .edge-experimental .edge { stroke: var(--experimental); stroke-dasharray: 7 6; opacity: .85; }
+    .arrow-active { fill: var(--line); }
+    .arrow-primary { fill: var(--primary); }
+    .arrow-planned { fill: var(--planned); }
+    .arrow-ondemand { fill: var(--ondemand); }
+    .arrow-experimental { fill: var(--experimental); }
+    .edge-label { fill: var(--fg); stroke: var(--surface); stroke-width: 6; paint-order: stroke; font-size: 10px; font-weight: 750; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px 22px; margin: 18px 4px 0; color: var(--muted); font-size: 13px; }
+    .legend span { display: inline-flex; align-items: center; gap: 8px; }
+    .legend-line { width: 34px; border-top: 2px solid var(--line); }
+    .legend-line.primary { border-color: var(--primary); }
+    .legend-line.ondemand { border-top-style: dotted; border-color: var(--ondemand); }
+    .legend-line.planned { border-top-style: dashed; border-color: var(--planned); }
+    .insights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 42px 0 54px; }
+    .insight { padding: 22px; border: 1px solid color-mix(in srgb, var(--line) 40%, transparent); border-radius: 18px; background: var(--surface); }
+    .insight b { display: block; margin-bottom: 6px; font-size: 16px; }
+    .insight p { margin: 0; color: var(--muted); }
+    .section-title { margin: 0 0 28px; font-size: 28px; letter-spacing: -.02em; }
+    .catalog-section { margin: 0 0 38px; }
+    .catalog-heading { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+    .catalog-heading h3 { margin: 0; font-size: 20px; }
+    .catalog-heading p { margin: 2px 0 0; color: var(--muted); }
+    .zone-index { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; font-size: 17px; font-weight: 850; }
+    .zone-index-input { background: var(--input); }
+    .zone-index-process { background: var(--process); }
+    .zone-index-storage { background: var(--storage); }
+    .zone-index-external { background: var(--external); }
+    .zone-index-neutral { background: var(--neutral); }
+    .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+    .catalog-card { position: relative; display: flex; gap: 13px; align-items: center; min-height: 82px; padding: 15px 38px 15px 15px; border: 1px solid color-mix(in srgb, var(--line) 36%, transparent); border-radius: 16px; background: var(--surface); }
+    .catalog-card h4 { margin: 0 0 2px; font-size: 15px; }
+    .catalog-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .catalog-logo { flex: 0 0 42px; width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+    .logo-disc-html { display: grid; place-items: center; padding: 10px; background: #fff; border: 1px solid rgba(15, 23, 42, .08); }
+    .logo-disc-html svg { width: 100%; height: 100%; }
+    .logo-text { display: grid; place-items: center; background: var(--brand); color: white; font-weight: 850; }
+    .catalog-status { position: absolute; top: 15px; right: 15px; width: 8px; height: 8px; border-radius: 50%; }
+    footer { margin-top: 48px; padding-top: 22px; border-top: 1px solid color-mix(in srgb, var(--line) 35%, transparent); color: var(--muted); font-size: 12px; }
+    footer a { color: inherit; }
+    @media (max-width: 760px) {
+      main { padding: 28px 14px 52px; }
+      header { grid-template-columns: minmax(0, 1fr); }
+      h1 { font-size: 32px; }
+      header .subtitle { overflow-wrap: anywhere; }
+      .meta { text-align: left; }
+      .insights { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">Living architecture</p>
+        <h1>${escapeHtml(architecture.meta.title)}</h1>
+        <p class="subtitle">${escapeHtml(architecture.meta.subtitle)}</p>
+      </div>
+      <div class="meta"><strong>${architecture.nodes.length} composants</strong>Mis à jour le ${escapeHtml(architecture.meta.updated)}</div>
+    </header>
+
+    <div class="diagram-shell" role="region" aria-label="Cartographie de l’écosystème IA" tabindex="0">
+      <svg class="diagram" viewBox="0 0 ${architecture.meta.width} ${architecture.meta.height}" role="img" aria-labelledby="map-title map-desc">
+        <title id="map-title">${escapeHtml(architecture.meta.title)}</title>
+        <desc id="map-desc">Architecture en cinq couches : interfaces, runtimes agentiques, mémoire et coordination, adaptateurs métier et infrastructure.</desc>
+        <defs>
+          ${markers}
+          <symbol id="brand-openclaw" viewBox="0 0 640 640"><image href="data:image/png;base64,${openClawLogo}" width="640" height="640" preserveAspectRatio="xMidYMid slice" /></symbol>
+        </defs>
+        ${architecture.zones.map(renderZone).join("\n")}
+        ${architecture.edges.map(renderEdge).join("\n")}
+        ${architecture.nodes.map(renderNode).join("\n")}
+      </svg>
+    </div>
+
+    <div class="legend" aria-label="Légende des flux">
+      <span><i class="legend-line primary"></i> flux principal</span>
+      <span><i class="legend-line"></i> intégration existante</span>
+      <span><i class="legend-line ondemand"></i> accès à la demande</span>
+      <span><i class="legend-line planned"></i> évolution planifiée</span>
+    </div>
+
+    <section class="insights" aria-label="Lecture de l’architecture">
+      <article class="insight"><b>Nestor est le plan de contrôle</b><p>Il orchestre les outils et la mémoire, sans remplacer les longues discussions WebUI ni les boucles de code interactives.</p></article>
+      <article class="insight"><b>Les sources restent spécialisées</b><p>Obsidian garde la connaissance, Linear les actions, GitHub le code et Docmost la documentation stabilisée.</p></article>
+      <article class="insight"><b>Le manque actuel est explicite</b><p>Le flux Linear → Obsidian en pointillé matérialise le futur workflow « Vault Capture » depuis Claude et ChatGPT.</p></article>
+    </section>
+
+    <h2 class="section-title">Catalogue maintenable</h2>
+    ${zoneCatalog}
+
+    <footer>
+      Vue publique volontairement expurgée des secrets, adresses privées et identifiants. Les marques appartiennent à leurs propriétaires respectifs ; pictogrammes issus de <a href="https://simpleicons.org/">Simple Icons</a> et <a href="https://lobehub.com/icons">LobeHub Icons</a>. Source de vérité : <a href="https://github.com/nestor-workspace/ai-ecosystem-map">architecture.json sur GitHub</a>.
+    </footer>
+  </main>
+</body>
+</html>`;
+
+await mkdir(new URL("dist/", root), { recursive: true });
+await writeFile(new URL("dist/index.html", root), html);
+console.log(`Built dist/index.html (${Buffer.byteLength(html)} bytes).`);

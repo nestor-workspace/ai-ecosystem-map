@@ -3,9 +3,22 @@ import * as simpleIcons from "simple-icons";
 
 const root = new URL("../", import.meta.url);
 const architecture = JSON.parse(await readFile(new URL("data/architecture.json", root), "utf8"));
-const openClawLogo = (
-  await readFile(new URL("assets/openclaw.png", root))
-).toString("base64");
+
+const brandAssetFiles = {
+  openclaw: "openclaw.png",
+  hermes: "hermes-agent.png",
+  docmost: "docmost.png",
+  rabbit: "rabbit.png",
+};
+
+const brandAssets = new Map(
+  await Promise.all(
+    Object.entries(brandAssetFiles).map(async ([slug, filename]) => [
+      slug,
+      (await readFile(new URL(`assets/${filename}`, root))).toString("base64"),
+    ]),
+  ),
+);
 
 const lobeIconFiles = {
   openai: "openai.svg",
@@ -63,9 +76,9 @@ function fallbackLetters(node) {
 }
 
 function renderSvgMark(node, x, y, size = 42) {
-  if (node.iconAsset === "openclaw") {
+  if (node.iconAsset && brandAssets.has(node.iconAsset)) {
     return `<circle cx="${x + size / 2}" cy="${y + size / 2}" r="${size / 2}" class="logo-disc" />
-      <use href="#brand-openclaw" x="${x}" y="${y}" width="${size}" height="${size}" />`;
+      <use href="#brand-${escapeHtml(node.iconAsset)}" x="${x + 3}" y="${y + 3}" width="${size - 6}" height="${size - 6}" />`;
   }
 
   const iconSlugs = node.icons || (node.icon ? [node.icon] : []);
@@ -89,8 +102,8 @@ function renderSvgMark(node, x, y, size = 42) {
 }
 
 function renderHtmlMark(node) {
-  if (node.iconAsset === "openclaw") {
-    return `<svg class="catalog-logo" viewBox="0 0 640 640" aria-hidden="true"><use href="#brand-openclaw" /></svg>`;
+  if (node.iconAsset && brandAssets.has(node.iconAsset)) {
+    return `<svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-${escapeHtml(node.iconAsset)}" /></svg>`;
   }
   const icon = brandIcon(node.icon) || (node.icons || []).map(brandIcon).find(Boolean);
   if (icon) {
@@ -137,7 +150,7 @@ function renderNode(node) {
   const classes = ["node", `node-${zone.kind}`, node.emphasis ? "node-emphasis" : ""]
     .filter(Boolean)
     .join(" ");
-  return `<g id="node-${node.id}" class="node-group">
+  return `<g id="node-${node.id}" class="node-group" data-node-id="${escapeHtml(node.id)}" role="button" tabindex="0" aria-label="Mettre en valeur les relations de ${escapeHtml(node.label)}">
     <rect x="${node.x}" y="${node.y}" width="${node.width}" height="${node.height}" rx="16" class="${classes}" />
     ${renderSvgMark(node, markX, markY, markSize)}
     <text x="${textX}" y="${labelY}" class="node-label">${escapeHtml(node.label)}</text>
@@ -196,9 +209,11 @@ function renderEdge(edge, index) {
   const path = bezierPath(start, end, fromSide, toSide);
   const labelX = (start[0] + end[0]) / 2;
   const labelY = (start[1] + end[1]) / 2 - 7;
-  return `<g class="edge-group edge-${edge.kind}">
-    <path id="edge-${index}" d="${path}" class="edge" marker-end="url(#arrow-${edge.kind})" />
-    ${edge.label ? `<text x="${labelX}" y="${labelY}" text-anchor="middle" class="edge-label">${escapeHtml(edge.label)}</text>` : ""}
+  const label = edge.label
+    ? `<text x="${labelX}" y="${labelY}" text-anchor="middle" class="edge-label">${escapeHtml(edge.label)}</text>`
+    : "";
+  return `<g class="edge-group edge-${edge.kind}" data-from="${escapeHtml(edge.from)}" data-to="${escapeHtml(edge.to)}">
+    <path id="edge-${index}" d="${path}" class="edge" marker-end="url(#arrow-${edge.kind})" />${label}
   </g>`;
 }
 
@@ -220,7 +235,7 @@ const zoneCatalog = architecture.zones
       </div>
       <div class="catalog-grid">${nodes
         .map(
-          (node) => `<article class="catalog-card">
+          (node) => `<article class="catalog-card" data-node-id="${escapeHtml(node.id)}" role="button" tabindex="0" aria-label="Mettre en valeur les relations de ${escapeHtml(node.label)}">
             ${renderHtmlMark(node)}
             <div><h4>${escapeHtml(node.label)}</h4><p>${escapeHtml(node.subtitle)}</p></div>
             <span class="catalog-status status-${node.status}" title="${escapeHtml(node.status)}"></span>
@@ -230,6 +245,13 @@ const zoneCatalog = architecture.zones
     </section>`;
   })
   .join("");
+
+const assetSymbols = [...brandAssets.entries()]
+  .map(
+    ([slug, base64]) =>
+      `<symbol id="brand-${escapeHtml(slug)}" viewBox="0 0 100 100"><image href="data:image/png;base64,${base64}" x="0" y="0" width="100" height="100" preserveAspectRatio="xMidYMid meet" /></symbol>`,
+  )
+  .join("\n");
 
 const html = `<!doctype html>
 <html lang="fr">
@@ -303,6 +325,15 @@ const html = `<!doctype html>
     .zone-title { font-size: 16px; font-weight: 780; fill: var(--fg); }
     .zone-subtitle { font-size: 12px; fill: var(--muted); }
     .node { stroke: color-mix(in srgb, var(--line) 58%, transparent); stroke-width: 1.2; filter: drop-shadow(0 5px 8px rgba(15, 23, 42, .06)); }
+    .node-group, .catalog-card { cursor: pointer; }
+    .node-group, .edge-group, .catalog-card { transition: opacity .18s ease, filter .18s ease, transform .18s ease; }
+    .node-group:hover .node, .node-group:focus-visible .node { stroke: var(--primary); stroke-width: 2.2; }
+    .node-group:focus-visible, .catalog-card:focus-visible { outline: none; }
+    .node-group:focus-visible .node { filter: drop-shadow(0 0 7px color-mix(in srgb, var(--primary) 65%, transparent)); }
+    .selection-active .node-group.is-dimmed, .selection-active .edge-group.is-dimmed { opacity: .11; }
+    .selection-active .node-group.is-related, .selection-active .edge-group.is-related { opacity: 1; }
+    .node-group.is-selected .node { stroke: var(--primary); stroke-width: 3.4; }
+    .node-group.is-related:not(.is-selected) .node { stroke: color-mix(in srgb, var(--primary) 58%, var(--line)); stroke-width: 1.8; }
     .node-input, .node-process, .node-storage, .node-external, .node-neutral { fill: var(--surface); }
     .node-emphasis { stroke: var(--primary); stroke-width: 2.2; }
     .node-label { font-size: 15px; font-weight: 760; fill: var(--fg); }
@@ -324,6 +355,7 @@ const html = `<!doctype html>
     .edge-label { fill: var(--fg); stroke: var(--surface); stroke-width: 6; paint-order: stroke; font-size: 10px; font-weight: 750; }
     .legend { display: flex; flex-wrap: wrap; gap: 12px 22px; margin: 18px 4px 0; color: var(--muted); font-size: 13px; }
     .legend span { display: inline-flex; align-items: center; gap: 8px; }
+    .legend .interaction-hint { margin-left: auto; color: var(--fg); font-weight: 700; }
     .legend-line { width: 34px; border-top: 2px solid var(--line); }
     .legend-line.primary { border-color: var(--primary); }
     .legend-line.ondemand { border-top-style: dotted; border-color: var(--ondemand); }
@@ -345,6 +377,10 @@ const html = `<!doctype html>
     .zone-index-neutral { background: var(--neutral); }
     .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
     .catalog-card { position: relative; display: flex; gap: 13px; align-items: center; min-height: 82px; padding: 15px 38px 15px 15px; border: 1px solid color-mix(in srgb, var(--line) 36%, transparent); border-radius: 16px; background: var(--surface); }
+    .catalog-card:hover { border-color: color-mix(in srgb, var(--primary) 52%, var(--line)); transform: translateY(-1px); }
+    .selection-active .catalog-card.is-dimmed { opacity: .28; }
+    .catalog-card.is-related { border-color: color-mix(in srgb, var(--primary) 45%, var(--line)); }
+    .catalog-card.is-selected { border-color: var(--primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 22%, transparent); }
     .catalog-card h4 { margin: 0 0 2px; font-size: 15px; }
     .catalog-card p { margin: 0; color: var(--muted); font-size: 13px; }
     .catalog-logo { flex: 0 0 42px; width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
@@ -381,7 +417,7 @@ const html = `<!doctype html>
         <desc id="map-desc">Architecture en cinq couches : interfaces, runtimes agentiques, mémoire et coordination, adaptateurs métier et infrastructure.</desc>
         <defs>
           ${markers}
-          <symbol id="brand-openclaw" viewBox="0 0 640 640"><image href="data:image/png;base64,${openClawLogo}" width="640" height="640" preserveAspectRatio="xMidYMid slice" /></symbol>
+          ${assetSymbols}
         </defs>
         ${architecture.zones.map(renderZone).join("\n")}
         ${architecture.edges.map(renderEdge).join("\n")}
@@ -394,11 +430,12 @@ const html = `<!doctype html>
       <span><i class="legend-line"></i> intégration existante</span>
       <span><i class="legend-line ondemand"></i> accès à la demande</span>
       <span><i class="legend-line planned"></i> évolution planifiée</span>
+      <span class="interaction-hint">Clique une case pour isoler ses relations · Échap pour réinitialiser</span>
     </div>
 
     <section class="insights" aria-label="Lecture de l’architecture">
       <article class="insight"><b>Nestor est le plan de contrôle</b><p>Il orchestre les outils et la mémoire, sans remplacer les longues discussions WebUI ni les boucles de code interactives.</p></article>
-      <article class="insight"><b>Les sources restent spécialisées</b><p>Obsidian garde la connaissance, Linear les actions, GitHub le code et Docmost la documentation stabilisée.</p></article>
+      <article class="insight"><b>Les mémoires restent spécialisées</b><p>OpenClaw combine mémoire durable, journal quotidien et transcripts indexés ; Hermes conserve profil, mémoire bornée et recherche de sessions.</p></article>
       <article class="insight"><b>Le manque actuel est explicite</b><p>Le flux Linear → Obsidian en pointillé matérialise le futur workflow « Vault Capture » depuis Claude et ChatGPT.</p></article>
     </section>
 
@@ -406,9 +443,77 @@ const html = `<!doctype html>
     ${zoneCatalog}
 
     <footer>
-      Vue publique volontairement expurgée des secrets, adresses privées et identifiants. Les marques appartiennent à leurs propriétaires respectifs ; pictogrammes issus de <a href="https://simpleicons.org/">Simple Icons</a> et <a href="https://lobehub.com/icons">LobeHub Icons</a>. Source de vérité : <a href="https://github.com/nestor-workspace/ai-ecosystem-map">architecture.json sur GitHub</a>.
+      Vue publique volontairement expurgée des secrets, adresses privées et identifiants. Les marques appartiennent à leurs propriétaires respectifs ; pictogrammes issus de <a href="https://simpleicons.org/">Simple Icons</a>, <a href="https://lobehub.com/icons">LobeHub Icons</a> et des assets officiels <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>, <a href="https://github.com/docmost/docmost">Docmost</a> et <a href="https://www.rabbit.tech/">rabbit</a>. Source de vérité : <a href="https://github.com/nestor-workspace/ai-ecosystem-map">architecture.json sur GitHub</a>.
     </footer>
   </main>
+  <script>
+    (() => {
+      const graphNodes = [...document.querySelectorAll('.node-group[data-node-id]')];
+      const catalogCards = [...document.querySelectorAll('.catalog-card[data-node-id]')];
+      const edges = [...document.querySelectorAll('.edge-group[data-from][data-to]')];
+      let selectedId = null;
+
+      const interactiveItems = [...graphNodes, ...catalogCards];
+
+      function clearSelection() {
+        selectedId = null;
+        document.body.classList.remove('selection-active');
+        for (const item of interactiveItems) {
+          item.classList.remove('is-selected', 'is-related', 'is-dimmed');
+          item.setAttribute('aria-pressed', 'false');
+        }
+        for (const edge of edges) edge.classList.remove('is-related', 'is-dimmed');
+      }
+
+      function selectNode(id) {
+        if (selectedId === id) {
+          clearSelection();
+          return;
+        }
+        selectedId = id;
+        const relatedIds = new Set([id]);
+        for (const edge of edges) {
+          const related = edge.dataset.from === id || edge.dataset.to === id;
+          edge.classList.toggle('is-related', related);
+          edge.classList.toggle('is-dimmed', !related);
+          if (related) {
+            relatedIds.add(edge.dataset.from);
+            relatedIds.add(edge.dataset.to);
+          }
+        }
+        for (const item of interactiveItems) {
+          const itemId = item.dataset.nodeId;
+          item.classList.toggle('is-selected', itemId === id);
+          item.classList.toggle('is-related', relatedIds.has(itemId));
+          item.classList.toggle('is-dimmed', !relatedIds.has(itemId));
+          item.setAttribute('aria-pressed', itemId === id ? 'true' : 'false');
+        }
+        document.body.classList.add('selection-active');
+      }
+
+      for (const item of interactiveItems) {
+        item.setAttribute('aria-pressed', 'false');
+        item.addEventListener('click', (event) => {
+          event.stopPropagation();
+          selectNode(item.dataset.nodeId);
+        });
+        item.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            selectNode(item.dataset.nodeId);
+          }
+        });
+      }
+
+      document.querySelector('.diagram-shell').addEventListener('click', clearSelection);
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') clearSelection();
+      });
+
+      const initialId = decodeURIComponent(location.hash.slice(1));
+      if (graphNodes.some((node) => node.dataset.nodeId === initialId)) selectNode(initialId);
+    })();
+  </script>
 </body>
 </html>`;
 

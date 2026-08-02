@@ -5,6 +5,7 @@ import test from "node:test";
 const architecture = JSON.parse(
   await readFile(new URL("../data/architecture.json", import.meta.url), "utf8"),
 );
+const generatedHtml = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
 
 test("every current zone contains at least one node", () => {
   for (const zone of architecture.zones) {
@@ -25,4 +26,33 @@ test("the map contains no private infrastructure coordinates", () => {
   assert.equal(serialized.includes("192.168."), false);
   assert.equal(serialized.includes("@gmail.com"), false);
   assert.equal(serialized.includes("token"), false);
+});
+
+test("Rabbit r1 is an active interface for all connected agent surfaces", () => {
+  const rabbit = architecture.nodes.find((node) => node.id === "rabbit-r1");
+  assert.equal(rabbit.status, "active");
+  const targets = architecture.edges
+    .filter((edge) => edge.from === "rabbit-r1")
+    .map((edge) => edge.to)
+    .sort();
+  assert.deepEqual(targets, ["claude-code", "hermes", "nestor"]);
+});
+
+test("self-hosted runtimes and memories are explicit", () => {
+  const nodeIds = new Set(architecture.nodes.map((node) => node.id));
+  for (const expected of ["hermes-agent-runtime", "hermes-memory", "openclaw-memory", "docmost"]) {
+    assert.ok(nodeIds.has(expected), `${expected} is missing`);
+  }
+  assert.ok(
+    architecture.edges.some((edge) => edge.from === "nas-vm" && edge.to === "docmost"),
+    "Docmost must be attached to the NAS",
+  );
+});
+
+test("the generated map exposes keyboard-selectable relationship highlighting", () => {
+  assert.match(generatedHtml, /function selectNode\(id\)/);
+  assert.match(generatedHtml, /data-node-id="rabbit-r1"/);
+  assert.match(generatedHtml, /data-from="rabbit-r1" data-to="nestor"/);
+  assert.match(generatedHtml, /event\.key === 'Escape'/);
+  assert.match(generatedHtml, /location\.hash\.slice\(1\)/);
 });

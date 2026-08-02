@@ -7,7 +7,7 @@
     "build": "node scripts/build.mjs",
     "check": "node --check scripts/build.mjs && node --check scripts/validate.mjs && node scripts/validate.mjs",
     "test": "node --test",
-    "verify": "npm run check && npm test && npm run build"
+    "verify": "npm run check && npm run build && npm test"
   },
   "dependencies": {
     "simple-icons": "16.28.0"

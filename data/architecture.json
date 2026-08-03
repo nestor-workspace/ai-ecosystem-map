@@ -1,10 +1,10 @@
 {
   "meta": {
     "title": "L’écosystème IA de Cyril",
-    "subtitle": "Interfaces, agents, mémoire, outils et infrastructure — état actuel et prochain pont d’ingestion",
-    "updated": "2026-08-02",
+    "subtitle": "Deux agents autonomes, leurs harnesses de code, couches mémoire, domaines métier et infrastructure",
+    "updated": "2026-08-03",
     "width": 1480,
-    "height": 1430
+    "height": 1818
   },
   "zones": [
     {
@@ -15,7 +15,7 @@
       "x": 40,
       "y": 80,
       "width": 1400,
-      "height": 180
+      "height": 286
     },
     {
       "id": "runtimes",
@@ -23,19 +23,19 @@
       "subtitle": "Exécution autonome ou boucle interactive avec Cyril",
       "kind": "process",
       "x": 40,
-      "y": 300,
+      "y": 406,
       "width": 1400,
-      "height": 250
+      "height": 568
     },
     {
       "id": "coordination",
       "title": "3. Mémoire & coordination",
-      "subtitle": "Sources canoniques, suivi et documentation",
+      "subtitle": "Mémoires internes des agents et sources canoniques partagées",
       "kind": "storage",
       "x": 40,
-      "y": 590,
+      "y": 1014,
       "width": 1400,
-      "height": 220
+      "height": 180
     },
     {
       "id": "domains",
@@ -43,9 +43,9 @@
       "subtitle": "CLI, API et connecteurs utilisés dans les workflows réels",
       "kind": "external",
       "x": 40,
-      "y": 850,
+      "y": 1234,
       "width": 1400,
-      "height": 240
+      "height": 324
     },
     {
       "id": "infrastructure",
@@ -53,9 +53,9 @@
       "subtitle": "Socle local-first, synchronisation et déploiement",
       "kind": "neutral",
       "x": 40,
-      "y": 1130,
+      "y": 1598,
       "width": 1400,
-      "height": 220
+      "height": 180
     }
   ],
   "nodes": [
@@ -67,8 +67,8 @@
       "icon": "openai",
       "x": 70,
       "y": 150,
-      "width": 240,
-      "height": 78,
+      "width": 250,
+      "height": 92,
       "status": "active"
     },
     {
@@ -77,46 +77,66 @@
       "label": "Claude",
       "subtitle": "App & WebUI · réflexion longue ou jetable",
       "icon": "claude",
-      "x": 335,
+      "x": 340,
       "y": 150,
-      "width": 240,
-      "height": 78,
+      "width": 250,
+      "height": 92,
       "status": "active"
     },
     {
       "id": "telegram",
       "zone": "interfaces",
       "label": "Telegram",
-      "subtitle": "Interface principale de Nestor & Hermes",
+      "subtitle": "Canal principal · Cyril & Estelle",
       "icon": "telegram",
-      "x": 600,
+      "x": 610,
       "y": 150,
-      "width": 240,
-      "height": 78,
+      "width": 280,
+      "height": 92,
       "status": "active"
     },
     {
       "id": "rabbit-r1",
       "zone": "interfaces",
       "label": "Rabbit r1",
-      "subtitle": "Interface vocale matérielle · en ligne",
+      "subtitle": "Interface vocale matérielle",
       "iconAsset": "rabbit",
-      "x": 865,
+      "x": 910,
       "y": 150,
       "width": 240,
-      "height": 78,
+      "height": 92,
       "status": "active"
     },
     {
       "id": "code-cli-tui",
       "zone": "interfaces",
       "label": "CLI / TUI de code",
-      "subtitle": "Claude Code · Codex · Kimi Code",
-      "icons": ["claudecode", "openai", "kimi"],
+      "subtitle": [
+        "Claude Code",
+        "Codex",
+        "Kimi Code"
+      ],
+      "icons": [
+        "claudecode",
+        "openai",
+        "kimi"
+      ],
       "iconText": ">_",
       "iconColor": "#344054",
-      "x": 1130,
+      "x": 1170,
       "y": 150,
+      "width": 255,
+      "height": 92,
+      "status": "active"
+    },
+    {
+      "id": "hermes-webui",
+      "zone": "interfaces",
+      "label": "Hermes WebUI",
+      "subtitle": "Console web auto-hébergée",
+      "iconAsset": "hermes-avatar",
+      "x": 610,
+      "y": 262,
       "width": 280,
       "height": 78,
       "status": "active"
@@ -125,12 +145,12 @@
       "id": "nestor",
       "zone": "runtimes",
       "label": "Nestor",
-      "subtitle": "OpenClaw · agent personnel principal",
+      "subtitle": "OpenClaw · agent personnel",
       "iconAsset": "openclaw",
       "x": 90,
-      "y": 370,
-      "width": 250,
-      "height": 88,
+      "y": 472,
+      "width": 290,
+      "height": 92,
       "status": "active",
       "emphasis": true
     },
@@ -138,62 +158,136 @@
       "id": "hermes",
       "zone": "runtimes",
       "label": "Hermes",
-      "subtitle": "Agent personnel · Nous Hermes Agent",
-      "iconAsset": "hermes",
-      "x": 380,
-      "y": 370,
-      "width": 230,
-      "height": 88,
-      "status": "active"
+      "subtitle": "Opérateur autonome · associé DecaSaaS",
+      "iconAsset": "hermes-avatar",
+      "x": 410,
+      "y": 472,
+      "width": 290,
+      "height": 92,
+      "status": "active",
+      "emphasis": true
     },
     {
       "id": "claude-code",
       "zone": "runtimes",
       "label": "Claude Code",
-      "subtitle": "CLI/TUI · harness de code interactif",
+      "subtitle": "CLI/TUI · harness interactif",
       "icon": "claudecode",
-      "x": 650,
-      "y": 370,
-      "width": 230,
-      "height": 88,
+      "x": 730,
+      "y": 472,
+      "width": 215,
+      "height": 92,
       "status": "active"
     },
     {
       "id": "codex",
       "zone": "runtimes",
       "label": "Codex",
-      "subtitle": "CLI/TUI · harness & runtime autonome",
+      "subtitle": "CLI/TUI · harness & runtime",
       "icon": "openai",
-      "x": 920,
-      "y": 370,
-      "width": 230,
-      "height": 88,
+      "x": 965,
+      "y": 472,
+      "width": 215,
+      "height": 92,
       "status": "active"
     },
     {
       "id": "kimi-code",
       "zone": "runtimes",
       "label": "Kimi Code",
-      "subtitle": "CLI/TUI · harness complémentaire",
+      "subtitle": "CLI/TUI · harness d’appoint",
       "icon": "kimi",
       "iconText": "K",
       "iconColor": "#5b6cff",
-      "x": 1190,
-      "y": 370,
+      "x": 1200,
+      "y": 472,
       "width": 200,
-      "height": 88,
+      "height": 92,
       "status": "active"
+    },
+    {
+      "id": "nestor-stack",
+      "zone": "runtimes",
+      "label": "Modèles Nestor",
+      "subtitle": [
+        "gpt-5.6-sol via codex",
+        "17 skills workspace"
+      ],
+      "icon": "openai",
+      "x": 90,
+      "y": 582,
+      "width": 290,
+      "height": 100,
+      "status": "active",
+      "compact": true
+    },
+    {
+      "id": "hermes-stack",
+      "zone": "runtimes",
+      "label": "Modèles Hermes",
+      "subtitle": [
+        "gpt-5.6-sol · fallback terra",
+        "13 rôles auxiliaires",
+        "~150 playbooks"
+      ],
+      "icon": "openai",
+      "x": 410,
+      "y": 582,
+      "width": 290,
+      "height": 100,
+      "status": "active",
+      "compact": true
+    },
+    {
+      "id": "nestor-cron",
+      "zone": "runtimes",
+      "label": "Autonomie Nestor",
+      "subtitle": [
+        "heartbeat 30 min · 08h-22h30",
+        "5 jobs cron actifs",
+        "consolidation mémoire 23h"
+      ],
+      "iconAsset": "openclaw",
+      "x": 90,
+      "y": 700,
+      "width": 290,
+      "height": 115,
+      "status": "active",
+      "compact": true
+    },
+    {
+      "id": "hermes-cron",
+      "zone": "runtimes",
+      "label": "Autonomie Hermes",
+      "subtitle": [
+        "5 jobs cron actifs",
+        "veille Gmail 2 min",
+        "pilotage quotidien 06h30"
+      ],
+      "iconAsset": "hermes-avatar",
+      "x": 410,
+      "y": 700,
+      "width": 290,
+      "height": 115,
+      "status": "active",
+      "compact": true
     },
     {
       "id": "openclaw-satellites",
       "zone": "runtimes",
-      "label": "Agents OpenClaw spécialisés",
-      "subtitle": "ops · veille · cron · MyPacer CEO · model-lab",
+      "label": "Agents OpenClaw",
+      "subtitle": [
+        "ops",
+        "veille",
+        "cron",
+        "mypacer-ceo",
+        "model-lab"
+      ],
       "iconAsset": "openclaw",
-      "x": 300,
-      "y": 475,
-      "width": 880,
-      "height": 52,
+      "x": 90,
+      "y": 833,
+      "width": 290,
+      "height": 115,
       "status": "active",
       "compact": true
     },
@@ -201,11 +295,11 @@
       "id": "obsidian",
       "zone": "coordination",
       "label": "Obsidian",
-      "subtitle": "Connaissance personnelle canonique",
+      "subtitle": "Connaissance personnelle",
       "icon": "obsidian",
       "x": 65,
-      "y": 665,
-      "width": 205,
+      "y": 1080,
+      "width": 170,
       "height": 88,
       "status": "active",
       "emphasis": true,
@@ -214,12 +308,16 @@
     {
       "id": "openclaw-memory",
       "zone": "coordination",
-      "label": "Mémoire OpenClaw",
-      "subtitle": "MEMORY.md · notes quotidiennes · recherche hybride",
+      "label": "Mémoire Nestor",
+      "subtitle": [
+        "MEMORY.md + 157 journaux",
+        "index FTS + vectoriel",
+        "11 512 transcripts"
+      ],
       "iconAsset": "openclaw",
-      "x": 290,
-      "y": 665,
-      "width": 225,
+      "x": 255,
+      "y": 1080,
+      "width": 250,
       "height": 88,
       "status": "active",
       "compact": true
@@ -228,11 +326,15 @@
       "id": "hermes-memory",
       "zone": "coordination",
       "label": "Mémoire Hermes",
-      "subtitle": "MEMORY.md + USER.md · recherche de sessions",
-      "iconAsset": "hermes",
-      "x": 535,
-      "y": 665,
-      "width": 225,
+      "subtitle": [
+        "MEMORY.md + USER.md bornés",
+        "index FTS + trigramme",
+        "885 sessions"
+      ],
+      "iconAsset": "hermes-avatar",
+      "x": 525,
+      "y": 1080,
+      "width": 260,
       "height": 88,
       "status": "active",
       "compact": true
@@ -241,11 +343,11 @@
       "id": "linear",
       "zone": "coordination",
       "label": "Linear",
-      "subtitle": "Actions, projets & futur bus d’ingestion",
+      "subtitle": "Actions & projets",
       "icon": "linear",
-      "x": 780,
-      "y": 665,
-      "width": 205,
+      "x": 805,
+      "y": 1080,
+      "width": 195,
       "height": 88,
       "status": "active",
       "emphasis": true,
@@ -255,11 +357,11 @@
       "id": "github",
       "zone": "coordination",
       "label": "GitHub",
-      "subtitle": "Code, PR, CI/CD, releases",
+      "subtitle": "Code, PR, CI/CD",
       "icon": "github",
-      "x": 1005,
-      "y": 665,
-      "width": 190,
+      "x": 1020,
+      "y": 1080,
+      "width": 185,
       "height": 88,
       "status": "active",
       "compact": true
@@ -268,11 +370,15 @@
       "id": "docmost",
       "zone": "coordination",
       "label": "Docmost",
-      "subtitle": "Wiki stabilisé · auto-hébergé sur le NAS",
+      "subtitle": [
+        "Wiki DecaSaaS",
+        "Doc perso",
+        "Veille techno"
+      ],
       "iconAsset": "docmost",
-      "x": 1215,
-      "y": 665,
-      "width": 200,
+      "x": 1225,
+      "y": 1080,
+      "width": 190,
       "height": 88,
       "status": "active",
       "compact": true
@@ -281,63 +387,104 @@
       "id": "google-workspace",
       "zone": "domains",
       "label": "Google Workspace",
-      "subtitle": "Gmail · Calendar · Drive · Docs",
+      "subtitle": [
+        "Gmail",
+        "Calendar",
+        "Drive",
+        "Docs"
+      ],
       "icon": "google",
       "x": 90,
-      "y": 930,
-      "width": 240,
-      "height": 92,
+      "y": 1300,
+      "width": 250,
+      "height": 120,
       "status": "active"
     },
     {
       "id": "health-sport",
       "zone": "domains",
       "label": "Santé & sport",
-      "subtitle": "Strava · COROS · Withings · Yazio · Nolio",
-      "icons": ["strava", "coros", "withings"],
+      "subtitle": [
+        "Strava",
+        "COROS",
+        "Withings",
+        "Yazio",
+        "Nolio"
+      ],
+      "icons": [
+        "strava",
+        "coros",
+        "withings"
+      ],
       "iconText": "S+",
       "iconColor": "#e85d04",
-      "x": 365,
-      "y": 930,
-      "width": 300,
-      "height": 92,
+      "x": 360,
+      "y": 1300,
+      "width": 250,
+      "height": 120,
       "status": "active"
     },
     {
       "id": "carrefour",
       "zone": "domains",
       "label": "Carrefour Drive",
-      "subtitle": "CLI custom · panier & liste locale",
+      "subtitle": [
+        "CLI custom",
+        "Panier & liste"
+      ],
       "icon": "carrefour",
       "iconText": "C",
       "iconColor": "#0050aa",
-      "x": 700,
-      "y": 930,
-      "width": 230,
-      "height": 92,
+      "x": 630,
+      "y": 1300,
+      "width": 250,
+      "height": 120,
       "status": "active"
     },
     {
       "id": "tidal",
       "zone": "domains",
       "label": "TIDAL",
-      "subtitle": "Recherche, playlists & publication",
+      "subtitle": [
+        "Playlists",
+        "Publication"
+      ],
       "icon": "tidal",
-      "x": 965,
-      "y": 930,
-      "width": 210,
-      "height": 92,
+      "x": 900,
+      "y": 1300,
+      "width": 240,
+      "height": 120,
       "status": "active"
     },
     {
       "id": "web-browser",
       "zone": "domains",
       "label": "Web & Browser",
-      "subtitle": "DDG · fetch · Chrome/CDP",
+      "subtitle": [
+        "DDG",
+        "fetch",
+        "Chrome/CDP"
+      ],
       "icon": "googlechrome",
-      "x": 1210,
-      "y": 930,
-      "width": 180,
+      "x": 1160,
+      "y": 1300,
+      "width": 240,
+      "height": 120,
+      "status": "active"
+    },
+    {
+      "id": "mypacer",
+      "zone": "domains",
+      "label": "MyPacer / DecaSaaS",
+      "subtitle": [
+        "Pilotage business",
+        "Prospection & campagnes",
+        "Prod ops & CLI dédiée"
+      ],
+      "iconAsset": "mypacer",
+      "x": 90,
+      "y": 1440,
+      "width": 430,
       "height": 92,
       "status": "active"
     },
@@ -345,11 +492,11 @@
       "id": "nas-vm",
       "zone": "infrastructure",
       "label": "VM sur NAS",
-      "subtitle": "Ubuntu · stockage local-first",
+      "subtitle": "Ubuntu · local-first",
       "icon": "ubuntu",
       "x": 65,
-      "y": 1205,
-      "width": 205,
+      "y": 1664,
+      "width": 185,
       "height": 88,
       "status": "active",
       "compact": true
@@ -358,11 +505,11 @@
       "id": "openclaw-gateway",
       "zone": "infrastructure",
       "label": "OpenClaw Gateway",
-      "subtitle": "Outils, sessions, canaux & nœuds",
+      "subtitle": "Outils, sessions & canaux",
       "iconAsset": "openclaw",
-      "x": 290,
-      "y": 1205,
-      "width": 210,
+      "x": 270,
+      "y": 1664,
+      "width": 240,
       "height": 88,
       "status": "active",
       "compact": true
@@ -371,11 +518,11 @@
       "id": "hermes-agent-runtime",
       "zone": "infrastructure",
       "label": "Hermes Agent",
-      "subtitle": "Runtime Nous Research auto-hébergé",
+      "subtitle": "Gateway Python · config git",
       "iconAsset": "hermes",
-      "x": 520,
-      "y": 1205,
-      "width": 210,
+      "x": 530,
+      "y": 1664,
+      "width": 200,
       "height": 88,
       "status": "active",
       "compact": true
@@ -384,10 +531,10 @@
       "id": "chrome-cdp",
       "zone": "infrastructure",
       "label": "Chrome / CDP",
-      "subtitle": "Session web persistante & automation",
+      "subtitle": "Session web persistante",
       "icon": "googlechrome",
       "x": 750,
-      "y": 1205,
+      "y": 1664,
       "width": 200,
       "height": 88,
       "status": "active",
@@ -397,11 +544,11 @@
       "id": "obsidian-sync",
       "zone": "infrastructure",
       "label": "Obsidian Sync",
-      "subtitle": "Transport unique entre appareils",
+      "subtitle": "Sync entre appareils",
       "icon": "obsidian",
       "x": 970,
-      "y": 1205,
-      "width": 195,
+      "y": 1664,
+      "width": 210,
       "height": 88,
       "status": "active",
       "compact": true
@@ -410,10 +557,10 @@
       "id": "github-actions",
       "zone": "infrastructure",
       "label": "GitHub Actions",
-      "subtitle": "CI/CD, releases & Pages",
+      "subtitle": "CI/CD & Pages",
       "icon": "githubactions",
-      "x": 1185,
-      "y": 1205,
+      "x": 1200,
+      "y": 1664,
       "width": 215,
       "height": 88,
       "status": "active",
@@ -421,51 +568,287 @@
     }
   ],
   "edges": [
-    {"from": "telegram", "to": "nestor", "kind": "primary", "label": "dialogue"},
-    {"from": "telegram", "to": "hermes", "kind": "active"},
-    {"from": "rabbit-r1", "to": "nestor", "kind": "primary", "label": "voix"},
-    {"from": "rabbit-r1", "to": "hermes", "kind": "active"},
-    {"from": "rabbit-r1", "to": "claude-code", "kind": "active"},
-    {"from": "code-cli-tui", "to": "claude-code", "kind": "primary"},
-    {"from": "code-cli-tui", "to": "codex", "kind": "primary"},
-    {"from": "code-cli-tui", "to": "kimi-code", "kind": "primary"},
-    {"from": "chatgpt-web", "to": "linear", "kind": "active", "label": "connecteur"},
-    {"from": "claude-web", "to": "linear", "kind": "active", "label": "connecteur"},
-    {"from": "linear", "to": "obsidian", "kind": "planned", "label": "Vault Capture"},
-
-    {"from": "openclaw-satellites", "to": "nestor", "kind": "active", "fromSide": "top", "toSide": "bottom"},
-    {"from": "nestor", "to": "openclaw-memory", "kind": "primary"},
-    {"from": "nestor", "to": "obsidian", "kind": "primary"},
-    {"from": "nestor", "to": "linear", "kind": "active"},
-    {"from": "nestor", "to": "github", "kind": "active"},
-    {"from": "nestor", "to": "docmost", "kind": "active"},
-    {"from": "hermes", "to": "obsidian", "kind": "active"},
-    {"from": "hermes", "to": "hermes-memory", "kind": "primary"},
-    {"from": "hermes", "to": "linear", "kind": "active"},
-    {"from": "claude-code", "to": "obsidian", "kind": "ondemand"},
-    {"from": "claude-code", "to": "linear", "kind": "active"},
-    {"from": "claude-code", "to": "github", "kind": "primary"},
-    {"from": "codex", "to": "obsidian", "kind": "ondemand"},
-    {"from": "codex", "to": "linear", "kind": "active"},
-    {"from": "codex", "to": "github", "kind": "primary"},
-    {"from": "kimi-code", "to": "obsidian", "kind": "ondemand"},
-    {"from": "kimi-code", "to": "linear", "kind": "active"},
-    {"from": "kimi-code", "to": "github", "kind": "primary"},
-
-    {"from": "openclaw-memory", "to": "nestor", "kind": "active", "fromSide": "top", "toSide": "bottom"},
-    {"from": "obsidian", "to": "obsidian-sync", "kind": "primary"},
-    {"from": "github", "to": "github-actions", "kind": "primary"},
-    {"from": "nas-vm", "to": "openclaw-gateway", "kind": "active", "fromSide": "right", "toSide": "left"},
-    {"from": "nas-vm", "to": "hermes-agent-runtime", "kind": "active", "fromSide": "right", "toSide": "left"},
-    {"from": "nas-vm", "to": "chrome-cdp", "kind": "active", "fromSide": "right", "toSide": "left"},
-    {"from": "nas-vm", "to": "docmost", "kind": "active"},
-    {"from": "openclaw-gateway", "to": "nestor", "kind": "active", "fromSide": "top", "toSide": "bottom"},
-    {"from": "hermes-agent-runtime", "to": "hermes", "kind": "active", "fromSide": "top", "toSide": "bottom"},
-
-    {"from": "nestor", "to": "google-workspace", "kind": "active"},
-    {"from": "nestor", "to": "health-sport", "kind": "active"},
-    {"from": "nestor", "to": "carrefour", "kind": "active"},
-    {"from": "nestor", "to": "tidal", "kind": "active"},
-    {"from": "nestor", "to": "web-browser", "kind": "active"}
+    {
+      "from": "telegram",
+      "to": "nestor",
+      "kind": "primary"
+    },
+    {
+      "from": "telegram",
+      "to": "hermes",
+      "kind": "primary"
+    },
+    {
+      "from": "rabbit-r1",
+      "to": "nestor",
+      "kind": "primary"
+    },
+    {
+      "from": "rabbit-r1",
+      "to": "hermes",
+      "kind": "active"
+    },
+    {
+      "from": "rabbit-r1",
+      "to": "claude-code",
+      "kind": "active"
+    },
+    {
+      "from": "hermes-webui",
+      "to": "hermes",
+      "kind": "primary"
+    },
+    {
+      "from": "code-cli-tui",
+      "to": "claude-code",
+      "kind": "primary"
+    },
+    {
+      "from": "code-cli-tui",
+      "to": "codex",
+      "kind": "primary"
+    },
+    {
+      "from": "code-cli-tui",
+      "to": "kimi-code",
+      "kind": "primary"
+    },
+    {
+      "from": "chatgpt-web",
+      "to": "linear",
+      "kind": "active"
+    },
+    {
+      "from": "claude-web",
+      "to": "linear",
+      "kind": "active"
+    },
+    {
+      "from": "linear",
+      "to": "obsidian",
+      "kind": "planned",
+      "fromSide": "bottom",
+      "toSide": "bottom",
+      "label": "Vault Capture"
+    },
+    {
+      "from": "openclaw-satellites",
+      "to": "nestor",
+      "kind": "active",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "from": "nestor-stack",
+      "to": "nestor",
+      "kind": "primary"
+    },
+    {
+      "from": "nestor-cron",
+      "to": "nestor",
+      "kind": "primary"
+    },
+    {
+      "from": "hermes-stack",
+      "to": "hermes",
+      "kind": "primary"
+    },
+    {
+      "from": "hermes-cron",
+      "to": "hermes",
+      "kind": "primary"
+    },
+    {
+      "from": "nestor",
+      "to": "openclaw-memory",
+      "kind": "primary"
+    },
+    {
+      "from": "nestor",
+      "to": "obsidian",
+      "kind": "primary"
+    },
+    {
+      "from": "nestor",
+      "to": "docmost",
+      "kind": "primary"
+    },
+    {
+      "from": "nestor",
+      "to": "linear",
+      "kind": "active"
+    },
+    {
+      "from": "nestor",
+      "to": "github",
+      "kind": "active"
+    },
+    {
+      "from": "hermes",
+      "to": "hermes-memory",
+      "kind": "primary"
+    },
+    {
+      "from": "hermes",
+      "to": "linear",
+      "kind": "primary"
+    },
+    {
+      "from": "hermes",
+      "to": "docmost",
+      "kind": "primary"
+    },
+    {
+      "from": "hermes",
+      "to": "github",
+      "kind": "active"
+    },
+    {
+      "from": "hermes",
+      "to": "obsidian",
+      "kind": "ondemand"
+    },
+    {
+      "from": "claude-code",
+      "to": "obsidian",
+      "kind": "ondemand"
+    },
+    {
+      "from": "claude-code",
+      "to": "linear",
+      "kind": "active"
+    },
+    {
+      "from": "claude-code",
+      "to": "github",
+      "kind": "primary"
+    },
+    {
+      "from": "codex",
+      "to": "obsidian",
+      "kind": "ondemand"
+    },
+    {
+      "from": "codex",
+      "to": "linear",
+      "kind": "active"
+    },
+    {
+      "from": "codex",
+      "to": "github",
+      "kind": "primary"
+    },
+    {
+      "from": "kimi-code",
+      "to": "obsidian",
+      "kind": "ondemand"
+    },
+    {
+      "from": "kimi-code",
+      "to": "linear",
+      "kind": "active"
+    },
+    {
+      "from": "kimi-code",
+      "to": "github",
+      "kind": "primary"
+    },
+    {
+      "from": "openclaw-memory",
+      "to": "nestor",
+      "kind": "active",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "from": "obsidian",
+      "to": "obsidian-sync",
+      "kind": "primary"
+    },
+    {
+      "from": "github",
+      "to": "github-actions",
+      "kind": "primary"
+    },
+    {
+      "from": "nas-vm",
+      "to": "openclaw-gateway",
+      "kind": "active",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "from": "nas-vm",
+      "to": "hermes-agent-runtime",
+      "kind": "active",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "from": "nas-vm",
+      "to": "chrome-cdp",
+      "kind": "active",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "from": "nas-vm",
+      "to": "docmost",
+      "kind": "active"
+    },
+    {
+      "from": "openclaw-gateway",
+      "to": "nestor",
+      "kind": "active",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "from": "hermes-agent-runtime",
+      "to": "hermes",
+      "kind": "active",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "from": "nestor",
+      "to": "google-workspace",
+      "kind": "active"
+    },
+    {
+      "from": "nestor",
+      "to": "health-sport",
+      "kind": "active"
+    },
+    {
+      "from": "nestor",
+      "to": "carrefour",
+      "kind": "active"
+    },
+    {
+      "from": "nestor",
+      "to": "tidal",
+      "kind": "active"
+    },
+    {
+      "from": "nestor",
+      "to": "web-browser",
+      "kind": "active"
+    },
+    {
+      "from": "hermes",
+      "to": "mypacer",
+      "kind": "primary"
+    },
+    {
+      "from": "hermes",
+      "to": "google-workspace",
+      "kind": "active"
+    },
+    {
+      "from": "hermes",
+      "to": "web-browser",
+      "kind": "active"
+    }
   ]
 }

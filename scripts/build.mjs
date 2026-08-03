@@ -6,9 +6,14 @@ const architecture = JSON.parse(await readFile(new URL("data/architecture.json",
 
 const brandAssetFiles = {
   openclaw: "openclaw.png",
+  // `hermes` = la marque du projet Nous Research ; `hermes-avatar` = l'avatar de
+  // l'instance de Cyril. Les deux coexistent : le nœud d'infrastructure désigne le
+  // projet upstream, les nœuds agent désignent son instance.
   hermes: "hermes-agent.png",
+  "hermes-avatar": "hermes-avatar.png",
   docmost: "docmost.png",
   rabbit: "rabbit.png",
+  mypacer: "mypacer.png",
 };
 
 const brandAssets = new Map(
@@ -19,6 +24,9 @@ const brandAssets = new Map(
     ]),
   ),
 );
+
+// Favicon inline : le document reste un fichier unique, sans requête vers un second asset.
+const favicon = (await readFile(new URL("assets/favicon.png", root))).toString("base64");
 
 const lobeIconFiles = {
   openai: "openai.svg",
@@ -77,8 +85,10 @@ function fallbackLetters(node) {
 
 function renderSvgMark(node, x, y, size = 42) {
   if (node.iconAsset && brandAssets.has(node.iconAsset)) {
+    // Le carré de l'image dépasse du disque (demi-diagonale > rayon) : on le découpe
+    // au cercle plutôt que de l'insérer, sinon les coins bavent hors de la pastille.
     return `<circle cx="${x + size / 2}" cy="${y + size / 2}" r="${size / 2}" class="logo-disc" />
-      <use href="#brand-${escapeHtml(node.iconAsset)}" x="${x + 3}" y="${y + 3}" width="${size - 6}" height="${size - 6}" />`;
+      <use href="#brand-${escapeHtml(node.iconAsset)}" x="${x}" y="${y}" width="${size}" height="${size}" clip-path="url(#disc-clip)" />`;
   }
 
   const iconSlugs = node.icons || (node.icon ? [node.icon] : []);
@@ -112,8 +122,17 @@ function renderHtmlMark(node) {
   return `<span class="catalog-logo logo-text" style="--brand:${escapeHtml(node.iconColor || "#667085")}">${escapeHtml(fallbackLetters(node))}</span>`;
 }
 
+// ponytail: largeur estimée au caractère, calibrée sur le pire ratio observé au rendu
+// (6.31px pour le sous-titre 11px, 9.76px pour le label 15px semi-gras). Volontairement
+// pessimiste : on préfère refuser une boîte trop juste que publier du texte qui déborde.
+// Si la police change, remesurer les bbox plutôt que d'ajuster ces constantes à l'aveugle.
+const SUBTITLE_CHAR_PX = 6.4;
+const LABEL_CHAR_PX = 9.8;
+
+const buildErrors = [];
+
 function wrapText(text, width, compact = false) {
-  const maxChars = Math.max(16, Math.floor((width - (compact ? 84 : 86)) / 6.2));
+  const maxChars = Math.max(16, Math.floor((width - (compact ? 84 : 86)) / SUBTITLE_CHAR_PX));
   const words = text.split(/\s+/);
   const lines = [];
   let current = "";
@@ -126,9 +145,53 @@ function wrapText(text, width, compact = false) {
     }
   }
   if (current) lines.push(current);
-  if (lines.length <= 2) return lines;
-  const second = `${lines.slice(1).join(" ").slice(0, Math.max(8, maxChars - 1)).trimEnd()}…`;
-  return [lines[0], second];
+  return lines;
+}
+
+const subtitleWidth = (node) => node.width - (node.compact ? 84 : 86);
+
+// Un sous-titre tableau est une énumération : un élément par ligne, jamais reflowé.
+// Une chaîne reste de la prose, wrappée sur deux lignes au maximum.
+function fittedSubtitle(node) {
+  if (Array.isArray(node.subtitle)) {
+    const available = subtitleWidth(node);
+    for (const item of node.subtitle) {
+      const estimated = item.length * SUBTITLE_CHAR_PX;
+      if (estimated > available) {
+        buildErrors.push(
+          `${node.id}: list item "${item}" needs ~${Math.round(estimated)}px, ${Math.round(available)}px available`,
+        );
+      }
+    }
+    return node.subtitle;
+  }
+  const lines = wrapText(node.subtitle, node.width, node.compact);
+  if (lines.length > 2) {
+    buildErrors.push(`${node.id}: subtitle needs ${lines.length} lines in ${node.width}px (max 2)`);
+  }
+  return lines.slice(0, 2);
+}
+
+// Doit rester aligné sur la géométrie de renderNode : ligne de base du label, puis
+// sous-titres tous les 15px, plus le jambage descendant de la dernière ligne.
+const DESCENDER = 4;
+
+function checkNodeFits(node, subtitleLines) {
+  const markSize = node.compact ? 32 : 42;
+  const availableWidth = node.width - (18 + markSize + 16) - 8;
+  const estimatedWidth = node.label.length * LABEL_CHAR_PX;
+  if (estimatedWidth > availableWidth) {
+    buildErrors.push(
+      `${node.id}: label "${node.label}" needs ~${Math.round(estimatedWidth)}px, ${Math.round(availableWidth)}px available`,
+    );
+  }
+  const labelOffset = node.compact ? 23 : 31;
+  const neededHeight = labelOffset + 22 + (subtitleLines.length - 1) * 15 + DESCENDER;
+  if (neededHeight > node.height) {
+    buildErrors.push(
+      `${node.id}: ${subtitleLines.length} subtitle line(s) need ${neededHeight}px of height, box is ${node.height}px`,
+    );
+  }
 }
 
 function renderZone(zone) {
@@ -139,14 +202,30 @@ function renderZone(zone) {
   </g>`;
 }
 
+function checkIconResolves(node) {
+  if (node.iconAsset && !brandAssets.has(node.iconAsset)) {
+    buildErrors.push(`${node.id}: unknown iconAsset "${node.iconAsset}"`);
+    return;
+  }
+  if (node.iconAsset) return;
+  const slugs = node.icons || (node.icon ? [node.icon] : []);
+  const unknown = slugs.filter((slug) => !brandIcon(slug));
+  // Un slug non résolu retombe silencieusement sur les initiales : on l'exige explicite.
+  if (unknown.length > 0 && !node.iconText) {
+    buildErrors.push(`${node.id}: unresolved icon slug(s) ${unknown.join(", ")} and no iconText fallback`);
+  }
+}
+
 function renderNode(node) {
   const zone = zoneById.get(node.zone);
+  checkIconResolves(node);
   const markSize = node.compact ? 32 : 42;
   const markX = node.x + 18;
   const markY = node.y + (node.height - markSize) / 2;
   const textX = markX + markSize + 16;
   const labelY = node.compact ? node.y + 23 : node.y + 31;
-  const subtitleLines = wrapText(node.subtitle, node.width, node.compact);
+  const subtitleLines = fittedSubtitle(node);
+  checkNodeFits(node, subtitleLines);
   const classes = ["node", `node-${zone.kind}`, node.emphasis ? "node-emphasis" : ""]
     .filter(Boolean)
     .join(" ");
@@ -183,19 +262,30 @@ function defaultSides(from, to) {
   return dx >= 0 ? ["right", "left"] : ["left", "right"];
 }
 
+// Point à t=0.5 d'une Bézier cubique : (P0 + 3·P1 + 3·P2 + P3) / 8.
+const cubicMidpoint = (p0, p1, p2, p3) => [
+  (p0[0] + 3 * p1[0] + 3 * p2[0] + p3[0]) / 8,
+  (p0[1] + 3 * p1[1] + 3 * p2[1] + p3[1]) / 8,
+];
+
 function bezierPath(start, end, startSide, endSide) {
   const [sx, sy] = start;
   const [tx, ty] = end;
+  let c1;
+  let c2;
   if ([startSide, endSide].every((side) => side === "top" || side === "bottom")) {
     const bend = Math.max(45, Math.abs(ty - sy) * 0.46);
-    const c1y = sy + (startSide === "bottom" ? bend : -bend);
-    const c2y = ty + (endSide === "top" ? -bend : bend);
-    return `M ${sx} ${sy} C ${sx} ${c1y}, ${tx} ${c2y}, ${tx} ${ty}`;
+    c1 = [sx, sy + (startSide === "bottom" ? bend : -bend)];
+    c2 = [tx, ty + (endSide === "top" ? -bend : bend)];
+  } else {
+    const bend = Math.max(45, Math.abs(tx - sx) * 0.46);
+    c1 = [sx + (startSide === "right" ? bend : -bend), sy];
+    c2 = [tx + (endSide === "left" ? -bend : bend), ty];
   }
-  const bend = Math.max(45, Math.abs(tx - sx) * 0.46);
-  const c1x = sx + (startSide === "right" ? bend : -bend);
-  const c2x = tx + (endSide === "left" ? -bend : bend);
-  return `M ${sx} ${sy} C ${c1x} ${sy}, ${c2x} ${ty}, ${tx} ${ty}`;
+  return {
+    d: `M ${sx} ${sy} C ${c1[0]} ${c1[1]}, ${c2[0]} ${c2[1]}, ${tx} ${ty}`,
+    mid: cubicMidpoint(start, c1, c2, end),
+  };
 }
 
 function renderEdge(edge, index) {
@@ -206,16 +296,18 @@ function renderEdge(edge, index) {
   const toSide = edge.toSide || defaultToSide;
   const start = anchor(from, fromSide);
   const end = anchor(to, toSide);
-  const path = bezierPath(start, end, fromSide, toSide);
-  const labelX = (start[0] + end[0]) / 2;
-  const labelY = (start[1] + end[1]) / 2 - 7;
+  const { d, mid } = bezierPath(start, end, fromSide, toSide);
   const label = edge.label
-    ? `<text x="${labelX}" y="${labelY}" text-anchor="middle" class="edge-label">${escapeHtml(edge.label)}</text>`
+    ? `<text x="${mid[0].toFixed(1)}" y="${(mid[1] - 7).toFixed(1)}" text-anchor="middle" class="edge-label">${escapeHtml(edge.label)}</text>`
     : "";
   return `<g class="edge-group edge-${edge.kind}" data-from="${escapeHtml(edge.from)}" data-to="${escapeHtml(edge.to)}">
-    <path id="edge-${index}" d="${path}" class="edge" marker-end="url(#arrow-${edge.kind})" />${label}
+    <path id="edge-${index}" d="${d}" class="edge" marker-end="url(#arrow-${edge.kind})" />${label}
   </g>`;
 }
+
+// clipPathUnits="objectBoundingBox" : le cercle s'adapte à la bbox de l'élément clippé,
+// donc un seul clipPath sert toutes les pastilles quelle que soit leur taille.
+const discClip = `<clipPath id="disc-clip" clipPathUnits="objectBoundingBox"><circle cx="0.5" cy="0.5" r="0.5" /></clipPath>`;
 
 const markers = ["active", "primary", "planned", "ondemand", "experimental"]
   .map(
@@ -224,6 +316,19 @@ const markers = ["active", "primary", "planned", "ondemand", "experimental"]
     </marker>`,
   )
   .join("");
+
+// La légende des pastilles se déduit des statuts réellement présents : pas d'entrée
+// pour un statut que plus aucun nœud ne porte.
+const STATUS_LABELS = {
+  active: "en usage régulier",
+  experimental: "expérimental",
+  planned: "non livré",
+};
+const presentStatuses = new Set(architecture.nodes.map((node) => node.status));
+const statusLegend = Object.entries(STATUS_LABELS)
+  .filter(([status]) => presentStatuses.has(status))
+  .map(([status, label]) => `<span><i class="legend-dot status-${status}"></i> ${label}</span>`)
+  .join("\n      ");
 
 const zoneCatalog = architecture.zones
   .map((zone) => {
@@ -237,7 +342,11 @@ const zoneCatalog = architecture.zones
         .map(
           (node) => `<article class="catalog-card" data-node-id="${escapeHtml(node.id)}" role="button" tabindex="0" aria-label="Mettre en valeur les relations de ${escapeHtml(node.label)}">
             ${renderHtmlMark(node)}
-            <div><h4>${escapeHtml(node.label)}</h4><p>${escapeHtml(node.subtitle)}</p></div>
+            <div><h4>${escapeHtml(node.label)}</h4>${
+              Array.isArray(node.subtitle)
+                ? `<ul>${node.subtitle.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
+                : `<p>${escapeHtml(node.subtitle)}</p>`
+            }</div>
             <span class="catalog-status status-${node.status}" title="${escapeHtml(node.status)}"></span>
           </article>`,
         )
@@ -259,6 +368,7 @@ const html = `<!doctype html>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Cartographie maintenable de l’écosystème IA personnel de Cyril." />
+  <link rel="icon" type="image/png" href="data:image/png;base64,${favicon}" />
   <title>${escapeHtml(architecture.meta.title)}</title>
   <style>
     :root {
@@ -342,6 +452,8 @@ const html = `<!doctype html>
     .logo-fallback { fill: #fff; font-size: 13px; font-weight: 850; }
     .status-active { fill: #22a06b; background: #22a06b; }
     .status-experimental { fill: var(--experimental); background: var(--experimental); }
+    .status-planned { fill: var(--planned); background: var(--planned); }
+    .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
     .edge { fill: none; stroke: var(--line); stroke-width: 1.35; opacity: .54; }
     .edge-primary .edge { stroke: var(--primary); stroke-width: 2.4; opacity: .82; }
     .edge-planned .edge { stroke: var(--planned); stroke-width: 2.5; stroke-dasharray: 10 7; opacity: .95; }
@@ -360,7 +472,7 @@ const html = `<!doctype html>
     .legend-line.primary { border-color: var(--primary); }
     .legend-line.ondemand { border-top-style: dotted; border-color: var(--ondemand); }
     .legend-line.planned { border-top-style: dashed; border-color: var(--planned); }
-    .insights { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 42px 0 54px; }
+    .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 42px 0 54px; }
     .insight { padding: 22px; border: 1px solid color-mix(in srgb, var(--line) 40%, transparent); border-radius: 18px; background: var(--surface); }
     .insight b { display: block; margin-bottom: 6px; font-size: 16px; }
     .insight p { margin: 0; color: var(--muted); }
@@ -383,6 +495,8 @@ const html = `<!doctype html>
     .catalog-card.is-selected { border-color: var(--primary); box-shadow: 0 0 0 2px color-mix(in srgb, var(--primary) 22%, transparent); }
     .catalog-card h4 { margin: 0 0 2px; font-size: 15px; }
     .catalog-card p { margin: 0; color: var(--muted); font-size: 13px; }
+    .catalog-card ul { margin: 0; padding-left: 16px; color: var(--muted); font-size: 13px; }
+    .catalog-logo { overflow: hidden; }
     .catalog-logo { flex: 0 0 42px; width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
     .logo-disc-html { display: grid; place-items: center; padding: 10px; background: #fff; border: 1px solid rgba(15, 23, 42, .08); }
     .logo-disc-html svg { width: 100%; height: 100%; }
@@ -416,6 +530,7 @@ const html = `<!doctype html>
         <title id="map-title">${escapeHtml(architecture.meta.title)}</title>
         <desc id="map-desc">Architecture en cinq couches : interfaces, runtimes agentiques, mémoire et coordination, adaptateurs métier et infrastructure.</desc>
         <defs>
+          ${discClip}
           ${markers}
           ${assetSymbols}
         </defs>
@@ -430,12 +545,14 @@ const html = `<!doctype html>
       <span><i class="legend-line"></i> intégration existante</span>
       <span><i class="legend-line ondemand"></i> accès à la demande</span>
       <span><i class="legend-line planned"></i> évolution planifiée</span>
+      ${statusLegend}
       <span class="interaction-hint">Clique une case pour isoler ses relations · Échap pour réinitialiser</span>
     </div>
 
     <section class="insights" aria-label="Lecture de l’architecture">
-      <article class="insight"><b>Nestor est le plan de contrôle</b><p>Il orchestre les outils et la mémoire, sans remplacer les longues discussions WebUI ni les boucles de code interactives.</p></article>
-      <article class="insight"><b>Les mémoires restent spécialisées</b><p>OpenClaw combine mémoire durable, journal quotidien et transcripts indexés ; Hermes conserve profil, mémoire bornée et recherche de sessions.</p></article>
+      <article class="insight"><b>Deux agents, deux mandats</b><p>Nestor orchestre le quotidien personnel depuis OpenClaw. Hermes opère DecaSaaS / MyPacer de bout en bout et ne supervise plus Nestor.</p></article>
+      <article class="insight"><b>Hermes tourne en boucle fermée</b><p>Cinq jobs cron déclenchent des tours sans sollicitation : veille des réponses toutes les deux minutes, pilotage business quotidien, études planifiées.</p></article>
+      <article class="insight"><b>Les mémoires restent spécialisées</b><p>OpenClaw combine mémoire durable, journal quotidien et transcripts indexés ; Hermes borne MEMORY.md et USER.md et s’appuie sur un index plein-texte de ses sessions.</p></article>
       <article class="insight"><b>Le manque actuel est explicite</b><p>Le flux Linear → Obsidian en pointillé matérialise le futur workflow « Vault Capture » depuis Claude et ChatGPT.</p></article>
     </section>
 
@@ -443,7 +560,7 @@ const html = `<!doctype html>
     ${zoneCatalog}
 
     <footer>
-      Vue publique volontairement expurgée des secrets, adresses privées et identifiants. Les marques appartiennent à leurs propriétaires respectifs ; pictogrammes issus de <a href="https://simpleicons.org/">Simple Icons</a>, <a href="https://lobehub.com/icons">LobeHub Icons</a> et des assets officiels <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>, <a href="https://github.com/docmost/docmost">Docmost</a> et <a href="https://www.rabbit.tech/">rabbit</a>. Source de vérité : <a href="https://github.com/nestor-workspace/ai-ecosystem-map">architecture.json sur GitHub</a>.
+      Vue publique volontairement expurgée des secrets, adresses privées et identifiants. Les marques appartiennent à leurs propriétaires respectifs ; pictogrammes issus de <a href="https://simpleicons.org/">Simple Icons</a>, <a href="https://lobehub.com/icons">LobeHub Icons</a> et des assets officiels <a href="https://github.com/NousResearch/hermes-agent">Hermes Agent</a>, <a href="https://github.com/docmost/docmost">Docmost</a> et <a href="https://www.rabbit.tech/">rabbit</a>. L’avatar des nœuds Hermes est celui de l’instance personnelle et n’est pas une marque de Nous Research. Source de vérité : <a href="https://github.com/nestor-workspace/ai-ecosystem-map">architecture.json sur GitHub</a>.
     </footer>
   </main>
   <script>
@@ -516,6 +633,11 @@ const html = `<!doctype html>
   </script>
 </body>
 </html>`;
+
+if (buildErrors.length > 0) {
+  console.error(`${buildErrors.length} node problem(s):\n${buildErrors.join("\n")}`);
+  process.exit(1);
+}
 
 await mkdir(new URL("dist/", root), { recursive: true });
 await writeFile(new URL("dist/index.html", root), html);

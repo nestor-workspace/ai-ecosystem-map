@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "dev": "npm run build && python3 -m http.server -d dist 8000",
     "check": "node --check scripts/build.mjs && node --check scripts/validate.mjs && node scripts/validate.mjs",
     "test": "node --test",
     "verify": "npm run check && npm run build && npm test"

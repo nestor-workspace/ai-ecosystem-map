@@ -6,7 +6,7 @@ Living, public-safe map of Cyril’s personal AI ecosystem: conversation surface
 
 Clicking any component highlights its direct relationships and dims the rest of the graph. The same interaction is available from the generated catalogue and by keyboard.
 
-The published site is generated from [`data/architecture.json`](data/architecture.json). The output is a standalone HTML document with inline CSS, inline SVG and embedded brand marks.
+The published site is generated from [`data/architecture.json`](data/architecture.json) by a single Node script — no framework, no bundler. The output is a standalone HTML document with inline CSS, inline SVG and embedded brand marks. [`docs/build.md`](docs/build.md) explains the generator, the layout model and the full data schema; [`AGENTS.md`](AGENTS.md) holds the working rules.
 
 ## Local development
 

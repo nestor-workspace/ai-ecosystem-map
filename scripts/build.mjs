@@ -461,6 +461,11 @@ const html = `<!doctype html>
     .node-group:focus-visible .node { filter: drop-shadow(0 0 7px color-mix(in srgb, var(--primary) 65%, transparent)); }
     .selection-active .node-group.is-dimmed, .selection-active .edge-group.is-dimmed { opacity: .11; }
     .selection-active .node-group.is-related, .selection-active .edge-group.is-related { opacity: 1; }
+    /* Remonter l'opacité du groupe ne suffit pas : le tracé garde la sienne, et un lien
+       gris à 54 % reste illisible dès qu'on cherche à suivre un chemin. On le pousse à
+       fond et on l'épaissit — les marqueurs sont en markerUnits="strokeWidth", donc la
+       pointe de flèche grossit avec le trait. */
+    .selection-active .edge-group.is-related .edge { stroke-width: calc(var(--w) + 1); opacity: 1; }
     .node-group.is-selected .node { stroke: var(--primary); stroke-width: 3.4; }
     .node-group.is-related:not(.is-selected) .node { stroke: color-mix(in srgb, var(--primary) 58%, var(--line)); stroke-width: 1.8; }
     .node-input, .node-process, .node-storage, .node-external, .node-neutral { fill: var(--surface); }
@@ -473,9 +478,14 @@ const html = `<!doctype html>
     .status-experimental { fill: var(--experimental); background: var(--experimental); }
     .status-planned { fill: var(--planned); background: var(--planned); }
     .legend-dot { width: 9px; height: 9px; border-radius: 50%; }
-    .edge { fill: none; stroke: var(--line); stroke-width: 1.35; opacity: .54; }
-    .edge-primary .edge { stroke: var(--primary); stroke-width: 2.4; opacity: .82; }
-    .edge-planned .edge { stroke: var(--planned); stroke-width: 2.5; stroke-dasharray: 10 7; opacity: .95; }
+    /* L'épaisseur passe par --w pour que la mise en avant à la sélection soit un delta
+       appliqué à tous les types, au lieu d'une valeur fixe qui écraserait la hiérarchie. */
+    .edge-group { --w: 1.35; }
+    .edge { fill: none; stroke: var(--line); stroke-width: var(--w); opacity: .54; }
+    .edge-primary { --w: 2.4; }
+    .edge-primary .edge { stroke: var(--primary); opacity: .82; }
+    .edge-planned { --w: 2.5; }
+    .edge-planned .edge { stroke: var(--planned); stroke-dasharray: 10 7; opacity: .95; }
     .edge-ondemand .edge { stroke: var(--ondemand); stroke-dasharray: 3 6; opacity: .75; }
     .edge-experimental .edge { stroke: var(--experimental); stroke-dasharray: 7 6; opacity: .85; }
     .arrow-active { fill: var(--line); }

@@ -139,6 +139,13 @@ ends of every incident edge, then marks each SVG node group, catalogue card and 
 `is-selected`, `is-related` or `is-dimmed`, and puts `selection-active` on `<body>` so the
 dimming rules only apply while something is selected.
 
+Raising the group's opacity is not enough on its own: the `<path>` carries its own, so a
+related edge would stay at the 54 % it uses at rest. The selection rule therefore lifts the
+path to full opacity and thickens it. The thickening is expressed as `calc(var(--w) + 1)` —
+each edge kind declares its resting width in `--w` on the group, so the emphasis is a delta
+that keeps the hierarchy (the primary flow stays the heaviest line) instead of flattening
+every kind to one width. Arrowheads use `markerUnits="strokeWidth"`, so they grow with it.
+
 Graph nodes and catalogue cards share the same `data-node-id`, which is why clicking either
 one highlights both. Both are `role="button" tabindex="0"` and answer Enter/Space; Escape and
 a click on the diagram background clear the selection. On load, a `#node-id` fragment

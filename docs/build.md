@@ -147,8 +147,10 @@ pre-selects that node, so any component is deep-linkable.
 Theming is pure CSS — a light palette in `:root`, a dark override under
 `@media (prefers-color-scheme: dark)`. No JS is involved and there is no theme toggle.
 
-The status legend is derived from the statuses actually present in the data, so a status no
-node carries produces no legend entry.
+Both legends are derived from what the data actually contains — a node status nobody carries
+and an edge kind nobody draws produce no legend entry. Adding a vocabulary value therefore
+means adding its label to `STATUS_LABELS` or `EDGE_LABELS` and its CSS rule; forgetting the
+label is what makes an entry silently disappear.
 
 ## Data reference
 

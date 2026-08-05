@@ -16,9 +16,23 @@ test("every current zone contains at least one node", () => {
   }
 });
 
+// Liste blanche volontairement vide : plus rien n'est annoncé sans être livré. Un flux
+// planifié doit être ajouté ici sciemment, pas glissé dans la carte au passage.
 test("planned edges are explicit and limited", () => {
   const planned = architecture.edges.filter((edge) => edge.kind === "planned");
-  assert.deepEqual(planned.map(({ from, to }) => `${from}->${to}`), ["linear->obsidian"]);
+  assert.deepEqual(planned.map(({ from, to }) => `${from}->${to}`), []);
+});
+
+test("Claude and ChatGPT capture notes into Obsidian through the watched inbox", () => {
+  const inbox = architecture.edges.filter((edge) => edge.label === "nestor-inbox");
+  assert.deepEqual(
+    inbox.map(({ from, to }) => `${from}->${to}`).sort(),
+    ["chatgpt-web->nestor", "claude-web->nestor"],
+  );
+  assert.ok(
+    architecture.edges.some((edge) => edge.from === "nestor" && edge.to === "obsidian"),
+    "Nestor must still write to Obsidian for the capture to land",
+  );
 });
 
 test("the map contains no private infrastructure coordinates", () => {
@@ -55,4 +69,9 @@ test("the generated map exposes keyboard-selectable relationship highlighting", 
   assert.match(generatedHtml, /data-from="rabbit-r1" data-to="nestor"/);
   assert.match(generatedHtml, /event\.key === 'Escape'/);
   assert.match(generatedHtml, /location\.hash\.slice\(1\)/);
+});
+
+test("the flow legend only lists edge kinds the map actually draws", () => {
+  assert.match(generatedHtml, /intégration existante/);
+  assert.equal(generatedHtml.includes("évolution planifiée"), false);
 });

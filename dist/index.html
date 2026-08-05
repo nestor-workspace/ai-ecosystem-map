@@ -108,6 +108,7 @@
     .legend-line.primary { border-color: var(--primary); }
     .legend-line.ondemand { border-top-style: dotted; border-color: var(--ondemand); }
     .legend-line.planned { border-top-style: dashed; border-color: var(--planned); }
+    .legend-line.experimental { border-top-style: dashed; border-color: var(--experimental); }
     .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 42px 0 54px; }
     .insight { padding: 22px; border: 1px solid color-mix(in srgb, var(--line) 40%, transparent); border-radius: 18px; background: var(--surface); }
     .insight b { display: block; margin-bottom: 6px; font-size: 16px; }
@@ -158,7 +159,7 @@
         <h1>L’écosystème IA de Cyril</h1>
         <p class="subtitle">Deux agents autonomes, leurs harnesses de code, couches mémoire, domaines métier et infrastructure</p>
       </div>
-      <div class="meta"><strong>34 composants</strong>Mis à jour le 2026-08-03</div>
+      <div class="meta"><strong>34 composants</strong>Mis à jour le 2026-08-05</div>
     </header>
 
     <div class="diagram-shell" role="region" aria-label="Cartographie de l’écosystème IA" tabindex="0">
@@ -243,131 +244,134 @@
 <g class="edge-group edge-active" data-from="claude-web" data-to="linear">
     <path id="edge-10" d="M 465 242 C 465 627.48, 902.5 694.52, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
   </g>
-<g class="edge-group edge-planned" data-from="linear" data-to="obsidian">
-    <path id="edge-11" d="M 902.5 1168 C 902.5 1213, 150 1213, 150 1168" class="edge" marker-end="url(#arrow-planned)" /><text x="526.3" y="1194.8" text-anchor="middle" class="edge-label">Vault Capture</text>
+<g class="edge-group edge-active" data-from="chatgpt-web" data-to="nestor">
+    <path id="edge-11" d="M 195 242 C 195 347.8, 235 366.2, 235 472" class="edge" marker-end="url(#arrow-active)" /><text x="215.0" y="350.0" text-anchor="middle" class="edge-label">nestor-inbox</text>
+  </g>
+<g class="edge-group edge-active" data-from="claude-web" data-to="nestor">
+    <path id="edge-12" d="M 465 242 C 465 347.8, 235 366.2, 235 472" class="edge" marker-end="url(#arrow-active)" /><text x="350.0" y="350.0" text-anchor="middle" class="edge-label">nestor-inbox</text>
   </g>
 <g class="edge-group edge-active" data-from="openclaw-satellites" data-to="nestor">
-    <path id="edge-12" d="M 235 833 C 235 709.26, 235 687.74, 235 564" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-13" d="M 235 833 C 235 709.26, 235 687.74, 235 564" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="nestor-stack" data-to="nestor">
-    <path id="edge-13" d="M 235 582 C 235 537, 235 609, 235 564" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-14" d="M 235 582 C 235 537, 235 609, 235 564" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="nestor-cron" data-to="nestor">
-    <path id="edge-14" d="M 235 700 C 235 637.44, 235 626.56, 235 564" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-15" d="M 235 700 C 235 637.44, 235 626.56, 235 564" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="hermes-stack" data-to="hermes">
-    <path id="edge-15" d="M 555 582 C 555 537, 555 609, 555 564" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-16" d="M 555 582 C 555 537, 555 609, 555 564" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="hermes-cron" data-to="hermes">
-    <path id="edge-16" d="M 555 700 C 555 637.44, 555 626.56, 555 564" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-17" d="M 555 700 C 555 637.44, 555 626.56, 555 564" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="nestor" data-to="openclaw-memory">
-    <path id="edge-17" d="M 235 564 C 235 801.36, 380 842.64, 380 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-18" d="M 235 564 C 235 801.36, 380 842.64, 380 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="nestor" data-to="obsidian">
-    <path id="edge-18" d="M 235 564 C 235 801.36, 150 842.64, 150 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-19" d="M 235 564 C 235 801.36, 150 842.64, 150 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="nestor" data-to="docmost">
-    <path id="edge-19" d="M 380 518 C 768.7 518, 836.3 1124, 1225 1124" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-20" d="M 380 518 C 768.7 518, 836.3 1124, 1225 1124" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="linear">
-    <path id="edge-20" d="M 235 564 C 235 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-21" d="M 235 564 C 235 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="github">
-    <path id="edge-21" d="M 380 518 C 674.4000000000001 518, 725.5999999999999 1124, 1020 1124" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-22" d="M 380 518 C 674.4000000000001 518, 725.5999999999999 1124, 1020 1124" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="hermes" data-to="hermes-memory">
-    <path id="edge-22" d="M 555 564 C 555 801.36, 655 842.64, 655 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-23" d="M 555 564 C 555 801.36, 655 842.64, 655 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="hermes" data-to="linear">
-    <path id="edge-23" d="M 555 564 C 555 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-24" d="M 555 564 C 555 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="hermes" data-to="docmost">
-    <path id="edge-24" d="M 555 564 C 555 801.36, 1320 842.64, 1320 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-25" d="M 555 564 C 555 801.36, 1320 842.64, 1320 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-active" data-from="hermes" data-to="github">
-    <path id="edge-25" d="M 555 564 C 555 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-26" d="M 555 564 C 555 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-ondemand" data-from="hermes" data-to="obsidian">
-    <path id="edge-26" d="M 555 564 C 555 801.36, 150 842.64, 150 1080" class="edge" marker-end="url(#arrow-ondemand)" />
+    <path id="edge-27" d="M 555 564 C 555 801.36, 150 842.64, 150 1080" class="edge" marker-end="url(#arrow-ondemand)" />
   </g>
 <g class="edge-group edge-ondemand" data-from="claude-code" data-to="obsidian">
-    <path id="edge-27" d="M 837.5 564 C 837.5 801.36, 150 842.64, 150 1080" class="edge" marker-end="url(#arrow-ondemand)" />
+    <path id="edge-28" d="M 837.5 564 C 837.5 801.36, 150 842.64, 150 1080" class="edge" marker-end="url(#arrow-ondemand)" />
   </g>
 <g class="edge-group edge-active" data-from="claude-code" data-to="linear">
-    <path id="edge-28" d="M 837.5 564 C 837.5 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-29" d="M 837.5 564 C 837.5 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="claude-code" data-to="github">
-    <path id="edge-29" d="M 837.5 564 C 837.5 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-30" d="M 837.5 564 C 837.5 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-ondemand" data-from="codex" data-to="obsidian">
-    <path id="edge-30" d="M 965 518 C 629.2 518, 570.8 1124, 235 1124" class="edge" marker-end="url(#arrow-ondemand)" />
+    <path id="edge-31" d="M 965 518 C 629.2 518, 570.8 1124, 235 1124" class="edge" marker-end="url(#arrow-ondemand)" />
   </g>
 <g class="edge-group edge-active" data-from="codex" data-to="linear">
-    <path id="edge-31" d="M 1072.5 564 C 1072.5 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-32" d="M 1072.5 564 C 1072.5 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="codex" data-to="github">
-    <path id="edge-32" d="M 1072.5 564 C 1072.5 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-33" d="M 1072.5 564 C 1072.5 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-ondemand" data-from="kimi-code" data-to="obsidian">
-    <path id="edge-33" d="M 1200 518 C 756.0999999999999 518, 678.9000000000001 1124, 235 1124" class="edge" marker-end="url(#arrow-ondemand)" />
+    <path id="edge-34" d="M 1200 518 C 756.0999999999999 518, 678.9000000000001 1124, 235 1124" class="edge" marker-end="url(#arrow-ondemand)" />
   </g>
 <g class="edge-group edge-active" data-from="kimi-code" data-to="linear">
-    <path id="edge-34" d="M 1300 564 C 1300 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-35" d="M 1300 564 C 1300 801.36, 902.5 842.64, 902.5 1080" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="kimi-code" data-to="github">
-    <path id="edge-35" d="M 1300 564 C 1300 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-36" d="M 1300 564 C 1300 801.36, 1112.5 842.64, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-active" data-from="openclaw-memory" data-to="nestor">
-    <path id="edge-36" d="M 380 1080 C 380 842.64, 235 801.36, 235 564" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-37" d="M 380 1080 C 380 842.64, 235 801.36, 235 564" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="obsidian" data-to="obsidian-sync">
-    <path id="edge-37" d="M 235 1124 C 573.1 1124, 631.9 1708, 970 1708" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-38" d="M 235 1124 C 573.1 1124, 631.9 1708, 970 1708" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-primary" data-from="github" data-to="github-actions">
-    <path id="edge-38" d="M 1112.5 1168 C 1112.5 1396.16, 1307.5 1435.84, 1307.5 1664" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-39" d="M 1112.5 1168 C 1112.5 1396.16, 1307.5 1435.84, 1307.5 1664" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-active" data-from="nas-vm" data-to="openclaw-gateway">
-    <path id="edge-39" d="M 250 1708 C 295 1708, 225 1708, 270 1708" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-40" d="M 250 1708 C 295 1708, 225 1708, 270 1708" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nas-vm" data-to="hermes-agent-runtime">
-    <path id="edge-40" d="M 250 1708 C 378.8 1708, 401.2 1708, 530 1708" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-41" d="M 250 1708 C 378.8 1708, 401.2 1708, 530 1708" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nas-vm" data-to="chrome-cdp">
-    <path id="edge-41" d="M 250 1708 C 480 1708, 520 1708, 750 1708" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-42" d="M 250 1708 C 480 1708, 520 1708, 750 1708" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nas-vm" data-to="docmost">
-    <path id="edge-42" d="M 250 1708 C 698.5 1708, 776.5 1124, 1225 1124" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-43" d="M 250 1708 C 698.5 1708, 776.5 1124, 1225 1124" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="openclaw-gateway" data-to="nestor">
-    <path id="edge-43" d="M 390 1664 C 390 1158, 235 1070, 235 564" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-44" d="M 390 1664 C 390 1158, 235 1070, 235 564" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="hermes-agent-runtime" data-to="hermes">
-    <path id="edge-44" d="M 630 1664 C 630 1158, 555 1070, 555 564" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-45" d="M 630 1664 C 630 1158, 555 1070, 555 564" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="google-workspace">
-    <path id="edge-45" d="M 235 564 C 235 902.56, 215 961.44, 215 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-46" d="M 235 564 C 235 902.56, 215 961.44, 215 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="health-sport">
-    <path id="edge-46" d="M 235 564 C 235 902.56, 485 961.44, 485 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-47" d="M 235 564 C 235 902.56, 485 961.44, 485 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="carrefour">
-    <path id="edge-47" d="M 235 564 C 235 902.56, 755 961.44, 755 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-48" d="M 235 564 C 235 902.56, 755 961.44, 755 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="tidal">
-    <path id="edge-48" d="M 235 564 C 235 902.56, 1020 961.44, 1020 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-49" d="M 235 564 C 235 902.56, 1020 961.44, 1020 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="nestor" data-to="web-browser">
-    <path id="edge-49" d="M 235 564 C 235 902.56, 1280 961.44, 1280 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-50" d="M 235 564 C 235 902.56, 1280 961.44, 1280 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-primary" data-from="hermes" data-to="mypacer">
-    <path id="edge-50" d="M 555 564 C 555 966.96, 305 1037.04, 305 1440" class="edge" marker-end="url(#arrow-primary)" />
+    <path id="edge-51" d="M 555 564 C 555 966.96, 305 1037.04, 305 1440" class="edge" marker-end="url(#arrow-primary)" />
   </g>
 <g class="edge-group edge-active" data-from="hermes" data-to="google-workspace">
-    <path id="edge-51" d="M 555 564 C 555 902.56, 215 961.44, 215 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-52" d="M 555 564 C 555 902.56, 215 961.44, 215 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
 <g class="edge-group edge-active" data-from="hermes" data-to="web-browser">
-    <path id="edge-52" d="M 555 564 C 555 902.56, 1280 961.44, 1280 1300" class="edge" marker-end="url(#arrow-active)" />
+    <path id="edge-53" d="M 555 564 C 555 902.56, 1280 961.44, 1280 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
         <g id="node-chatgpt-web" class="node-group" data-node-id="chatgpt-web" role="button" tabindex="0" aria-label="Mettre en valeur les relations de ChatGPT">
     <rect x="70" y="150" width="250" height="92" rx="16" class="node node-input" />
@@ -627,7 +631,6 @@
       <span><i class="legend-line primary"></i> flux principal</span>
       <span><i class="legend-line"></i> intégration existante</span>
       <span><i class="legend-line ondemand"></i> accès à la demande</span>
-      <span><i class="legend-line planned"></i> évolution planifiée</span>
       <span><i class="legend-dot status-active"></i> en usage régulier</span>
       <span class="interaction-hint">Clique une case pour isoler ses relations · Échap pour réinitialiser</span>
     </div>
@@ -636,7 +639,7 @@
       <article class="insight"><b>Deux agents, deux mandats</b><p>Nestor orchestre le quotidien personnel depuis OpenClaw. Hermes opère DecaSaaS / MyPacer de bout en bout et ne supervise plus Nestor.</p></article>
       <article class="insight"><b>Hermes tourne en boucle fermée</b><p>Cinq jobs cron déclenchent des tours sans sollicitation : veille des réponses toutes les deux minutes, pilotage business quotidien, études planifiées.</p></article>
       <article class="insight"><b>Les mémoires restent spécialisées</b><p>OpenClaw combine mémoire durable, journal quotidien et transcripts indexés ; Hermes borne MEMORY.md et USER.md et s’appuie sur un index plein-texte de ses sessions.</p></article>
-      <article class="insight"><b>Le manque actuel est explicite</b><p>Le flux Linear → Obsidian en pointillé matérialise le futur workflow « Vault Capture » depuis Claude et ChatGPT.</p></article>
+      <article class="insight"><b>Claude et ChatGPT alimentent le vault</b><p>Leurs apps déposent une note Markdown dans le dossier Drive « nestor-inbox » ; Nestor surveille cet emplacement et classe la note dans Obsidian.</p></article>
     </section>
 
     <h2 class="section-title">Catalogue maintenable</h2>

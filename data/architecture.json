@@ -2,7 +2,7 @@
   "meta": {
     "title": "L’écosystème IA de Cyril",
     "subtitle": "Deux agents autonomes, leurs harnesses de code, couches mémoire, domaines métier et infrastructure",
-    "updated": "2026-08-03",
+    "updated": "2026-08-05",
     "width": 1480,
     "height": 1818
   },
@@ -624,12 +624,16 @@
       "kind": "active"
     },
     {
-      "from": "linear",
-      "to": "obsidian",
-      "kind": "planned",
-      "fromSide": "bottom",
-      "toSide": "bottom",
-      "label": "Vault Capture"
+      "from": "chatgpt-web",
+      "to": "nestor",
+      "kind": "active",
+      "label": "nestor-inbox"
+    },
+    {
+      "from": "claude-web",
+      "to": "nestor",
+      "kind": "active",
+      "label": "nestor-inbox"
     },
     {
       "from": "openclaw-satellites",

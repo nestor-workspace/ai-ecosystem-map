@@ -330,6 +330,25 @@ const statusLegend = Object.entries(STATUS_LABELS)
   .map(([status, label]) => `<span><i class="legend-dot status-${status}"></i> ${label}</span>`)
   .join("\n      ");
 
+// Même principe pour les flux : pas d'entrée pour un type d'arête que plus aucun lien
+// ne porte. Le jour où le dernier lien planifié disparaît, sa ligne disparaît avec lui.
+const EDGE_LABELS = {
+  primary: "flux principal",
+  active: "intégration existante",
+  ondemand: "accès à la demande",
+  planned: "évolution planifiée",
+  experimental: "expérimental",
+};
+const presentEdgeKinds = new Set(architecture.edges.map((edge) => edge.kind));
+const flowLegend = Object.entries(EDGE_LABELS)
+  .filter(([kind]) => presentEdgeKinds.has(kind))
+  // `active` est le trait par défaut : il n'a pas de classe modificatrice.
+  .map(
+    ([kind, label]) =>
+      `<span><i class="legend-line${kind === "active" ? "" : ` ${kind}`}"></i> ${label}</span>`,
+  )
+  .join("\n      ");
+
 const zoneCatalog = architecture.zones
   .map((zone) => {
     const nodes = architecture.nodes.filter((node) => node.zone === zone.id);
@@ -472,6 +491,7 @@ const html = `<!doctype html>
     .legend-line.primary { border-color: var(--primary); }
     .legend-line.ondemand { border-top-style: dotted; border-color: var(--ondemand); }
     .legend-line.planned { border-top-style: dashed; border-color: var(--planned); }
+    .legend-line.experimental { border-top-style: dashed; border-color: var(--experimental); }
     .insights { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 42px 0 54px; }
     .insight { padding: 22px; border: 1px solid color-mix(in srgb, var(--line) 40%, transparent); border-radius: 18px; background: var(--surface); }
     .insight b { display: block; margin-bottom: 6px; font-size: 16px; }
@@ -541,10 +561,7 @@ const html = `<!doctype html>
     </div>
 
     <div class="legend" aria-label="Légende des flux">
-      <span><i class="legend-line primary"></i> flux principal</span>
-      <span><i class="legend-line"></i> intégration existante</span>
-      <span><i class="legend-line ondemand"></i> accès à la demande</span>
-      <span><i class="legend-line planned"></i> évolution planifiée</span>
+      ${flowLegend}
       ${statusLegend}
       <span class="interaction-hint">Clique une case pour isoler ses relations · Échap pour réinitialiser</span>
     </div>
@@ -553,7 +570,7 @@ const html = `<!doctype html>
       <article class="insight"><b>Deux agents, deux mandats</b><p>Nestor orchestre le quotidien personnel depuis OpenClaw. Hermes opère DecaSaaS / MyPacer de bout en bout et ne supervise plus Nestor.</p></article>
       <article class="insight"><b>Hermes tourne en boucle fermée</b><p>Cinq jobs cron déclenchent des tours sans sollicitation : veille des réponses toutes les deux minutes, pilotage business quotidien, études planifiées.</p></article>
       <article class="insight"><b>Les mémoires restent spécialisées</b><p>OpenClaw combine mémoire durable, journal quotidien et transcripts indexés ; Hermes borne MEMORY.md et USER.md et s’appuie sur un index plein-texte de ses sessions.</p></article>
-      <article class="insight"><b>Le manque actuel est explicite</b><p>Le flux Linear → Obsidian en pointillé matérialise le futur workflow « Vault Capture » depuis Claude et ChatGPT.</p></article>
+      <article class="insight"><b>Claude et ChatGPT alimentent le vault</b><p>Leurs apps déposent une note Markdown dans le dossier Drive « nestor-inbox » ; Nestor surveille cet emplacement et classe la note dans Obsidian.</p></article>
     </section>
 
     <h2 class="section-title">Catalogue maintenable</h2>

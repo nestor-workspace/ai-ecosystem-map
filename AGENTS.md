@@ -24,6 +24,24 @@ npm run dev      # build, then serve dist/ on http://localhost:8000 (no watcher)
 `npm run verify` must pass before anything is committed. It is exactly what CI and the Pages
 deploy run, so a green local run means a green pipeline.
 
+## Verifying a visual change
+
+`npm run verify` never looks at the rendered page. For a CSS, layout or icon change, render it:
+
+```bash
+HEADLESS=$(ls ~/Library/Caches/ms-playwright/chromium_headless_shell-*/chrome-headless-shell-*/chrome-headless-shell | head -1)
+"$HEADLESS" --headless --disable-gpu --hide-scrollbars --force-device-scale-factor=2 \
+  --window-size=1700,2700 --screenshot=/tmp/map.png \
+  "file://$PWD/dist/index.html#google-workspace"
+```
+
+- There is no Chrome on this machine; the headless shell in the Playwright cache does the job
+  with no extra dependency.
+- A `#node-id` fragment pre-selects that node — the only way to render the selected state in
+  one command.
+- To prove a CSS refactor is neutral at rest, compare the SHA-256 of two nominal screenshots
+  taken with identical flags. They must be byte-identical.
+
 ## Rules
 
 - **This repo is public.** Never add credentials, tokens, private hostnames, private IP
@@ -46,7 +64,8 @@ deploy run, so a green local run means a green pipeline.
 
 - Page content, data strings and code comments are in **French**. README, `docs/` and this
   file are in **English**.
-- Conventional Commits, linear history (rebase, no merge commits).
+- Conventional Commits, linear history. Merge a PR by fast-forwarding `main` onto the branch
+  locally, not with `gh pr merge` — it preserves the commit SHA instead of rewriting it.
 - Vocabularies are closed sets, enforced by `scripts/validate.mjs`: node `status` is
   `active` / `experimental` / `planned`; edge `kind` is `primary` / `active` / `ondemand` /
   `planned` / `experimental`. Adding a value means updating the validator, the CSS and the

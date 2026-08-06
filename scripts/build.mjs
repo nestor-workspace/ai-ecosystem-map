@@ -386,7 +386,7 @@ const html = `<!doctype html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Cartographie maintenable de l’écosystème IA personnel de Cyril." />
+  <meta name="description" content="Cartographie maintenable d’un écosystème IA personnel." />
   <link rel="icon" type="image/png" href="data:image/png;base64,${favicon}" />
   <title>${escapeHtml(architecture.meta.title)}</title>
   <style>

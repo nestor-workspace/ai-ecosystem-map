@@ -1,8 +1,8 @@
 {
   "meta": {
-    "title": "L’écosystème IA de Cyril",
+    "title": "Écosystème IA personnel",
     "subtitle": "Deux agents autonomes, leurs harnesses de code, couches mémoire, domaines métier et infrastructure",
-    "updated": "2026-08-05",
+    "updated": "2026-08-06",
     "width": 1480,
     "height": 1818
   },
@@ -20,7 +20,7 @@
     {
       "id": "runtimes",
       "title": "2. Runtimes agentiques",
-      "subtitle": "Exécution autonome ou boucle interactive avec Cyril",
+      "subtitle": "Exécution autonome ou boucle interactive",
       "kind": "process",
       "x": 40,
       "y": 406,
@@ -87,7 +87,7 @@
       "id": "telegram",
       "zone": "interfaces",
       "label": "Telegram",
-      "subtitle": "Canal principal · Cyril & Estelle",
+      "subtitle": "Canal principal · usage familial",
       "icon": "telegram",
       "x": 610,
       "y": 150,

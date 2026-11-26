@@ -2,9 +2,9 @@
   "meta": {
     "title": "Écosystème IA personnel",
     "subtitle": "Deux agents autonomes, leurs harnesses de code, couches mémoire, domaines métier et infrastructure",
-    "updated": "2026-08-06",
+    "updated": "2026-11-26",
     "width": 1480,
-    "height": 1818
+    "height": 1926
   },
   "zones": [
     {
@@ -55,7 +55,7 @@
       "x": 40,
       "y": 1598,
       "width": 1400,
-      "height": 180
+      "height": 288
     }
   ],
   "nodes": [
@@ -112,9 +112,8 @@
       "zone": "interfaces",
       "label": "CLI / TUI de code",
       "subtitle": [
-        "Claude Code",
-        "Codex",
-        "Kimi Code"
+        "Claude Code · Codex",
+        "Kimi Code · Pi"
       ],
       "icons": [
         "claudecode",
@@ -234,10 +233,11 @@
       "zone": "runtimes",
       "label": "Modèles Nestor",
       "subtitle": [
-        "gpt-5.6-sol via codex",
-        "17 skills workspace"
+        "claude-opus-5-5 via claude-cli",
+        "secours sonnet-5-5 · gpt-6-sol",
+        "20 skills workspace"
       ],
-      "icon": "openai",
+      "icon": "claude",
       "x": 90,
       "y": 582,
       "width": 290,
@@ -268,7 +268,7 @@
       "label": "Autonomie Nestor",
       "subtitle": [
         "heartbeat 30 min · 08h-22h30",
-        "5 jobs cron actifs",
+        "8 jobs cron récurrents",
         "consolidation mémoire 23h"
       ],
       "iconAsset": "openclaw",
@@ -334,9 +334,9 @@
       "zone": "coordination",
       "label": "Mémoire Nestor",
       "subtitle": [
-        "MEMORY.md + 157 journaux",
+        "MEMORY.md + 222 journaux",
         "index FTS + vectoriel",
-        "11 512 transcripts"
+        "≈5 600 transcripts"
       ],
       "iconAsset": "openclaw",
       "x": 255,
@@ -586,6 +586,77 @@
       "x": 1200,
       "y": 1664,
       "width": 215,
+      "height": 88,
+      "status": "active",
+      "compact": true
+    },
+    {
+      "id": "remote-sessions",
+      "zone": "interfaces",
+      "label": "Sessions distantes",
+      "subtitle": [
+        "Claude app · Remote Control",
+        "app iOS · Pi"
+      ],
+      "icon": "claude",
+      "x": 910,
+      "y": 262,
+      "width": 290,
+      "height": 78,
+      "status": "active"
+    },
+    {
+      "id": "pi",
+      "zone": "runtimes",
+      "label": "Pi",
+      "subtitle": "CLI/TUI · harness minimaliste",
+      "iconText": "π",
+      "iconColor": "#344054",
+      "x": 965,
+      "y": 582,
+      "width": 215,
+      "height": 92,
+      "status": "active"
+    },
+    {
+      "id": "documents",
+      "zone": "domains",
+      "label": "Documents iCloud",
+      "subtitle": [
+        "Miroir iCloud · NAS",
+        "RAG · MCP documents"
+      ],
+      "icon": "icloud",
+      "x": 540,
+      "y": 1440,
+      "width": 250,
+      "height": 92,
+      "status": "active"
+    },
+    {
+      "id": "whatsapp",
+      "zone": "domains",
+      "label": "WhatsApp",
+      "subtitle": [
+        "wacli · miroir local",
+        "Suivi & digest tech"
+      ],
+      "icon": "whatsapp",
+      "x": 810,
+      "y": 1440,
+      "width": 250,
+      "height": 92,
+      "status": "active"
+    },
+    {
+      "id": "devbox",
+      "zone": "infrastructure",
+      "label": "Devbox Incus",
+      "subtitle": "VM sur NAS · sessions de code",
+      "icon": "linuxcontainers",
+      "x": 65,
+      "y": 1772,
+      "width": 240,
       "height": 88,
       "status": "active",
       "compact": true
@@ -884,6 +955,51 @@
     {
       "from": "hermes",
       "to": "web-browser",
+      "kind": "active"
+    },
+    {
+      "from": "remote-sessions",
+      "to": "claude-code",
+      "kind": "primary"
+    },
+    {
+      "from": "remote-sessions",
+      "to": "pi",
+      "kind": "primary"
+    },
+    {
+      "from": "code-cli-tui",
+      "to": "pi",
+      "kind": "primary"
+    },
+    {
+      "from": "pi",
+      "to": "github",
+      "kind": "primary"
+    },
+    {
+      "from": "devbox",
+      "to": "claude-code",
+      "kind": "active"
+    },
+    {
+      "from": "devbox",
+      "to": "pi",
+      "kind": "active"
+    },
+    {
+      "from": "nestor",
+      "to": "documents",
+      "kind": "active"
+    },
+    {
+      "from": "hermes",
+      "to": "documents",
+      "kind": "ondemand"
+    },
+    {
+      "from": "nestor",
+      "to": "whatsapp",
       "kind": "active"
     }
   ]

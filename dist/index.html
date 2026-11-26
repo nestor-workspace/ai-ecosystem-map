@@ -169,11 +169,11 @@
         <h1>Écosystème IA personnel</h1>
         <p class="subtitle">Deux agents autonomes, leurs harnesses de code, couches mémoire, domaines métier et infrastructure</p>
       </div>
-      <div class="meta"><strong>36 composants</strong>Mis à jour le 2026-08-06</div>
+      <div class="meta"><strong>41 composants</strong>Mis à jour le 2026-11-26</div>
     </header>
 
     <div class="diagram-shell" role="region" aria-label="Cartographie de l’écosystème IA" tabindex="0">
-      <svg class="diagram" viewBox="0 0 1480 1818" role="img" aria-labelledby="map-title map-desc">
+      <svg class="diagram" viewBox="0 0 1480 1926" role="img" aria-labelledby="map-title map-desc">
         <title id="map-title">Écosystème IA personnel</title>
         <desc id="map-desc">Architecture en cinq couches : interfaces, runtimes agentiques, mémoire et coordination, adaptateurs métier et infrastructure.</desc>
         <defs>
@@ -217,7 +217,7 @@
     <text x="68" y="1290" class="zone-subtitle">CLI, API et connecteurs utilisés dans les workflows réels</text>
   </g>
 <g class="zone-group">
-    <rect x="40" y="1598" width="1400" height="180" rx="24" class="zone zone-neutral" />
+    <rect x="40" y="1598" width="1400" height="288" rx="24" class="zone zone-neutral" />
     <text x="68" y="1632" class="zone-title">5. Infrastructure</text>
     <text x="68" y="1654" class="zone-subtitle">Socle local-first, synchronisation et déploiement</text>
   </g>
@@ -389,6 +389,33 @@
 <g class="edge-group edge-active" data-from="hermes" data-to="web-browser">
     <path id="edge-55" d="M 555 564 C 555 902.56, 1280 961.44, 1280 1300" class="edge" marker-end="url(#arrow-active)" />
   </g>
+<g class="edge-group edge-primary" data-from="remote-sessions" data-to="claude-code">
+    <path id="edge-56" d="M 1055 340 C 1055 400.72, 837.5 411.28, 837.5 472" class="edge" marker-end="url(#arrow-primary)" />
+  </g>
+<g class="edge-group edge-primary" data-from="remote-sessions" data-to="pi">
+    <path id="edge-57" d="M 1055 340 C 1055 451.32, 1072.5 470.68, 1072.5 582" class="edge" marker-end="url(#arrow-primary)" />
+  </g>
+<g class="edge-group edge-primary" data-from="code-cli-tui" data-to="pi">
+    <path id="edge-58" d="M 1297.5 242 C 1297.5 398.4, 1072.5 425.6, 1072.5 582" class="edge" marker-end="url(#arrow-primary)" />
+  </g>
+<g class="edge-group edge-primary" data-from="pi" data-to="github">
+    <path id="edge-59" d="M 1072.5 674 C 1072.5 860.76, 1112.5 893.24, 1112.5 1080" class="edge" marker-end="url(#arrow-primary)" />
+  </g>
+<g class="edge-group edge-active" data-from="devbox" data-to="claude-code">
+    <path id="edge-60" d="M 185 1772 C 185 1216.32, 837.5 1119.68, 837.5 564" class="edge" marker-end="url(#arrow-active)" />
+  </g>
+<g class="edge-group edge-active" data-from="devbox" data-to="pi">
+    <path id="edge-61" d="M 185 1772 C 185 1266.92, 1072.5 1179.08, 1072.5 674" class="edge" marker-end="url(#arrow-active)" />
+  </g>
+<g class="edge-group edge-active" data-from="nestor" data-to="documents">
+    <path id="edge-62" d="M 235 564 C 235 966.96, 665 1037.04, 665 1440" class="edge" marker-end="url(#arrow-active)" />
+  </g>
+<g class="edge-group edge-ondemand" data-from="hermes" data-to="documents">
+    <path id="edge-63" d="M 555 564 C 555 966.96, 665 1037.04, 665 1440" class="edge" marker-end="url(#arrow-ondemand)" />
+  </g>
+<g class="edge-group edge-active" data-from="nestor" data-to="whatsapp">
+    <path id="edge-64" d="M 235 564 C 235 966.96, 935 1037.04, 935 1440" class="edge" marker-end="url(#arrow-active)" />
+  </g>
         <g id="node-chatgpt-web" class="node-group" data-node-id="chatgpt-web" role="button" tabindex="0" aria-label="Mettre en valeur les relations de ChatGPT">
     <rect x="70" y="150" width="250" height="92" rx="16" class="node node-input" />
     <circle cx="109" cy="196" r="21" class="logo-disc" /><svg x="96.82" y="183.82" width="24.36" height="24.36" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"></path></svg>
@@ -422,7 +449,7 @@
     <rect x="1170" y="150" width="255" height="92" rx="16" class="node node-input" />
     <circle cx="1209" cy="196" r="21" class="logo-disc" /><svg x="1183.06" y="188.02" width="15.96" height="15.96" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"></path></svg><svg x="1201.02" y="188.02" width="15.96" height="15.96" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"></path></svg><svg x="1218.98" y="188.02" width="15.96" height="15.96" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M21.765.351C22.998.351 24 1.353 24 2.586S22.998 4.82 21.765 4.82h-1.974c-.15 0-.26-.12-.26-.26V2.586A2.237 2.237 0 0 1 21.765.35M9.41 13.388l8.447-8.377c.16-.16.07-.471-.14-.471h-4.55s-.1.02-.14.06l-9.099 9.029c-.14.14-.35.02-.35-.21V4.81c0-.15-.1-.27-.221-.27H.22c-.12 0-.22.12-.22.27v18.57c0 .15.1.27.22.27h3.137c.12 0 .22-.12.22-.27v-3.79c0-.08.03-.16.08-.21l2.826-2.796c.07-.07.16-.08.241-.03l7.546 5.551a8.9 8.9 0 0 0 4.018 1.493c.12.01.23-.11.23-.27V19.76c0-.14-.08-.25-.19-.26a5.8 5.8 0 0 1-2.355-.942l-6.533-4.73c-.14-.09-.15-.32-.03-.441" fill="#000000" /></svg>
     <text x="1246" y="181" class="node-label">CLI / TUI de code</text>
-    <text x="1246" y="203" class="node-subtitle">Claude Code</text><text x="1246" y="218" class="node-subtitle">Codex</text><text x="1246" y="233" class="node-subtitle">Kimi Code</text>
+    <text x="1246" y="203" class="node-subtitle">Claude Code · Codex</text><text x="1246" y="218" class="node-subtitle">Kimi Code · Pi</text>
     <circle cx="1411" cy="164" r="4" class="status status-active" />
   </g>
 <g id="node-openclaw-webui" class="node-group" data-node-id="openclaw-webui" role="button" tabindex="0" aria-label="Mettre en valeur les relations de OpenClaw WebUI">
@@ -487,9 +514,9 @@
   </g>
 <g id="node-nestor-stack" class="node-group" data-node-id="nestor-stack" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Modèles Nestor">
     <rect x="90" y="582" width="290" height="100" rx="16" class="node node-process" />
-    <circle cx="124" cy="632" r="16" class="logo-disc" /><svg x="114.72" y="622.72" width="18.56" height="18.56" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"></path></svg>
+    <circle cx="124" cy="632" r="16" class="logo-disc" /><svg x="114.72" y="622.72" width="18.56" height="18.56" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.476 2.491 1.833.365.304.145-.103.019-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.414 1.002 2.229 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.242.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.006 1.81 2.509 2.33.127.578-.322.455-.34-.049-2.205-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.086-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z" fill="#D97757" fill-rule="nonzero"></path></svg>
     <text x="156" y="605" class="node-label">Modèles Nestor</text>
-    <text x="156" y="627" class="node-subtitle">gpt-5.6-sol via codex</text><text x="156" y="642" class="node-subtitle">17 skills workspace</text>
+    <text x="156" y="627" class="node-subtitle">claude-opus-5-5 via claude-cli</text><text x="156" y="642" class="node-subtitle">secours sonnet-5-5 · gpt-6-sol</text><text x="156" y="657" class="node-subtitle">20 skills workspace</text>
     <circle cx="366" cy="596" r="4" class="status status-active" />
   </g>
 <g id="node-hermes-stack" class="node-group" data-node-id="hermes-stack" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Modèles Hermes">
@@ -504,7 +531,7 @@
     <circle cx="124" cy="757.5" r="16" class="logo-disc" />
       <use href="#brand-openclaw" x="108" y="741.5" width="32" height="32" clip-path="url(#disc-clip)" />
     <text x="156" y="723" class="node-label">Autonomie Nestor</text>
-    <text x="156" y="745" class="node-subtitle">heartbeat 30 min · 08h-22h30</text><text x="156" y="760" class="node-subtitle">5 jobs cron actifs</text><text x="156" y="775" class="node-subtitle">consolidation mémoire 23h</text>
+    <text x="156" y="745" class="node-subtitle">heartbeat 30 min · 08h-22h30</text><text x="156" y="760" class="node-subtitle">8 jobs cron récurrents</text><text x="156" y="775" class="node-subtitle">consolidation mémoire 23h</text>
     <circle cx="366" cy="714" r="4" class="status status-active" />
   </g>
 <g id="node-hermes-cron" class="node-group" data-node-id="hermes-cron" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Autonomie Hermes">
@@ -535,7 +562,7 @@
     <circle cx="289" cy="1124" r="16" class="logo-disc" />
       <use href="#brand-openclaw" x="273" y="1108" width="32" height="32" clip-path="url(#disc-clip)" />
     <text x="321" y="1103" class="node-label">Mémoire Nestor</text>
-    <text x="321" y="1125" class="node-subtitle">MEMORY.md + 157 journaux</text><text x="321" y="1140" class="node-subtitle">index FTS + vectoriel</text><text x="321" y="1155" class="node-subtitle">11 512 transcripts</text>
+    <text x="321" y="1125" class="node-subtitle">MEMORY.md + 222 journaux</text><text x="321" y="1140" class="node-subtitle">index FTS + vectoriel</text><text x="321" y="1155" class="node-subtitle">≈5 600 transcripts</text>
     <circle cx="491" cy="1094" r="4" class="status status-active" />
   </g>
 <g id="node-hermes-memory" class="node-group" data-node-id="hermes-memory" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Mémoire Hermes">
@@ -655,6 +682,42 @@
     <text x="1266" y="1709" class="node-subtitle">CI/CD &amp; Pages</text>
     <circle cx="1401" cy="1678" r="4" class="status status-active" />
   </g>
+<g id="node-remote-sessions" class="node-group" data-node-id="remote-sessions" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Sessions distantes">
+    <rect x="910" y="262" width="290" height="78" rx="16" class="node node-input" />
+    <circle cx="949" cy="301" r="21" class="logo-disc" /><svg x="936.82" y="288.82" width="24.36" height="24.36" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.476 2.491 1.833.365.304.145-.103.019-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.414 1.002 2.229 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.242.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.006 1.81 2.509 2.33.127.578-.322.455-.34-.049-2.205-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.086-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z" fill="#D97757" fill-rule="nonzero"></path></svg>
+    <text x="986" y="293" class="node-label">Sessions distantes</text>
+    <text x="986" y="315" class="node-subtitle">Claude app · Remote Control</text><text x="986" y="330" class="node-subtitle">app iOS · Pi</text>
+    <circle cx="1186" cy="276" r="4" class="status status-active" />
+  </g>
+<g id="node-pi" class="node-group" data-node-id="pi" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Pi">
+    <rect x="965" y="582" width="215" height="92" rx="16" class="node node-process" />
+    <circle cx="1004" cy="628" r="21" fill="#344054" />
+    <text x="1004" y="633" text-anchor="middle" class="logo-fallback">π</text>
+    <text x="1041" y="613" class="node-label">Pi</text>
+    <text x="1041" y="635" class="node-subtitle">CLI/TUI · harness</text><text x="1041" y="650" class="node-subtitle">minimaliste</text>
+    <circle cx="1166" cy="596" r="4" class="status status-active" />
+  </g>
+<g id="node-documents" class="node-group" data-node-id="documents" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Documents iCloud">
+    <rect x="540" y="1440" width="250" height="92" rx="16" class="node node-external" />
+    <circle cx="579" cy="1486" r="21" class="logo-disc" /><svg x="566.82" y="1473.82" width="24.36" height="24.36" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M13.762 4.29a6.51 6.51 0 0 0-5.669 3.332 3.571 3.571 0 0 0-1.558-.36 3.571 3.571 0 0 0-3.516 3A4.918 4.918 0 0 0 0 14.796a4.918 4.918 0 0 0 4.92 4.914 4.93 4.93 0 0 0 .617-.045h14.42c2.305-.272 4.041-2.258 4.043-4.589v-.009a4.594 4.594 0 0 0-3.727-4.508 6.51 6.51 0 0 0-6.511-6.27z" fill="#3693F3" /></svg>
+    <text x="616" y="1471" class="node-label">Documents iCloud</text>
+    <text x="616" y="1493" class="node-subtitle">Miroir iCloud · NAS</text><text x="616" y="1508" class="node-subtitle">RAG · MCP documents</text>
+    <circle cx="776" cy="1454" r="4" class="status status-active" />
+  </g>
+<g id="node-whatsapp" class="node-group" data-node-id="whatsapp" role="button" tabindex="0" aria-label="Mettre en valeur les relations de WhatsApp">
+    <rect x="810" y="1440" width="250" height="92" rx="16" class="node node-external" />
+    <circle cx="849" cy="1486" r="21" class="logo-disc" /><svg x="836.82" y="1473.82" width="24.36" height="24.36" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="#25D366" /></svg>
+    <text x="886" y="1471" class="node-label">WhatsApp</text>
+    <text x="886" y="1493" class="node-subtitle">wacli · miroir local</text><text x="886" y="1508" class="node-subtitle">Suivi &amp; digest tech</text>
+    <circle cx="1046" cy="1454" r="4" class="status status-active" />
+  </g>
+<g id="node-devbox" class="node-group" data-node-id="devbox" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Devbox Incus">
+    <rect x="65" y="1772" width="240" height="88" rx="16" class="node node-neutral" />
+    <circle cx="99" cy="1816" r="16" class="logo-disc" /><svg x="89.72" y="1806.72" width="18.56" height="18.56" viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M10.15 8.98l1.647.951-5.756 3.345.005-1.911L10.15 8.98zm1.723-1.001l-1.553.902 1.548.893.005-1.795zM6.028 5.33L6.025 6.4l.543.316 3.602 2.079 1.632-.948-2.19-1.279-3.231-1.887-.351-.203-.002.852zm.072-.983l.359.209 6.321 3.65 5.258 3.037 5.858-3.405L11.956.943 6.1 4.347zm6.002 12.602l-.005 1.924 5.858-3.404.005-1.924-5.858 3.404zm-.077-9.009l-.005 1.922 5.94 3.428.005-1.92-5.94-3.43zm-10.13.945l4.075 2.352 4.031-2.342-4.075-2.353-4.031 2.343zM24 7.982l-5.858 3.404-.015 3.982 5.858-3.404L24 7.982zm-12.048 10.04l.003-1.073L7.6 14.436l-1.565-.903v.001l-.939-.542L.015 10.06.01 11.979l11.94 6.895.002-.852zm5.935-4.605l-5.922-3.411-5.853 3.401 5.917 3.414 5.858-3.404zm6.072-1.238l-11.862 6.864-.01 4.013 11.863-6.894.009-3.983zM11.944 21.27l.005-2.227L.01 12.148 0 16.162l11.94 6.895.004-1.787zM.021 9.802L1.6 8.885.025 7.976.021 9.802zm5.832-3.39l.024-1.636.001-.296L.099 7.848l1.647.951 4.107-2.387zm.041 4.951L1.749 8.97l-.46.267-1.195.695 5.795 3.345.005-1.914z" fill="#333333" /></svg>
+    <text x="131" y="1795" class="node-label">Devbox Incus</text>
+    <text x="131" y="1817" class="node-subtitle">VM sur NAS · sessions de</text><text x="131" y="1832" class="node-subtitle">code</text>
+    <circle cx="291" cy="1786" r="4" class="status status-active" />
+  </g>
       </svg>
     </div>
 
@@ -697,7 +760,7 @@
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="code-cli-tui" role="button" tabindex="0" aria-label="Mettre en valeur les relations de CLI / TUI de code">
             <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path clip-rule="evenodd" d="M20.998 10.949H24v3.102h-3v3.028h-1.487V20H18v-2.921h-1.487V20H15v-2.921H9V20H7.488v-2.921H6V20H4.487v-2.921H3V14.05H0V10.95h3V5h17.998v5.949zM6 10.949h1.488V8.102H6v2.847zm10.51 0H18V8.102h-1.49v2.847z" fill="#D97757" fill-rule="evenodd"></path></svg></span>
-            <div><h4>CLI / TUI de code</h4><ul><li>Claude Code</li><li>Codex</li><li>Kimi Code</li></ul></div>
+            <div><h4>CLI / TUI de code</h4><ul><li>Claude Code · Codex</li><li>Kimi Code · Pi</li></ul></div>
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="openclaw-webui" role="button" tabindex="0" aria-label="Mettre en valeur les relations de OpenClaw WebUI">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-openclaw" /></svg>
@@ -710,6 +773,10 @@
           </article><article class="catalog-card" data-node-id="hermes-webui" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Hermes WebUI">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-hermes-avatar" /></svg>
             <div><h4>Hermes WebUI</h4><p>Console web auto-hébergée</p></div>
+            <span class="catalog-status status-active" title="active"></span>
+          </article><article class="catalog-card" data-node-id="remote-sessions" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Sessions distantes">
+            <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.476 2.491 1.833.365.304.145-.103.019-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.414 1.002 2.229 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.242.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.006 1.81 2.509 2.33.127.578-.322.455-.34-.049-2.205-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.086-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z" fill="#D97757" fill-rule="nonzero"></path></svg></span>
+            <div><h4>Sessions distantes</h4><ul><li>Claude app · Remote Control</li><li>app iOS · Pi</li></ul></div>
             <span class="catalog-status status-active" title="active"></span>
           </article></div>
     </section><section class="catalog-section">
@@ -738,8 +805,8 @@
             <div><h4>Kimi Code</h4><p>CLI/TUI · harness d’appoint</p></div>
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="nestor-stack" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Modèles Nestor">
-            <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"></path></svg></span>
-            <div><h4>Modèles Nestor</h4><ul><li>gpt-5.6-sol via codex</li><li>17 skills workspace</li></ul></div>
+            <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M4.709 15.955l4.72-2.647.08-.23-.08-.128H9.2l-.79-.048-2.698-.073-2.339-.097-2.266-.122-.571-.121L0 11.784l.055-.352.48-.321.686.06 1.52.103 2.278.158 1.652.097 2.449.255h.389l.055-.157-.134-.098-.103-.097-2.358-1.596-2.552-1.688-1.336-.972-.724-.491-.364-.462-.158-1.008.656-.722.881.06.225.061.893.686 1.908 1.476 2.491 1.833.365.304.145-.103.019-.073-.164-.274-1.355-2.446-1.446-2.49-.644-1.032-.17-.619a2.97 2.97 0 01-.104-.729L6.283.134 6.696 0l.996.134.42.364.62 1.414 1.002 2.229 1.555 3.03.456.898.243.832.091.255h.158V9.01l.128-1.706.237-2.095.23-2.695.08-.76.376-.91.747-.492.584.28.48.685-.067.444-.286 1.851-.559 2.903-.364 1.942h.212l.243-.242.985-1.306 1.652-2.064.73-.82.85-.904.547-.431h1.033l.76 1.129-.34 1.166-1.064 1.347-.881 1.142-1.264 1.7-.79 1.36.073.11.188-.02 2.856-.606 1.543-.28 1.841-.315.833.388.091.395-.328.807-1.969.486-2.309.462-3.439.813-.042.03.049.061 1.549.146.662.036h1.622l3.02.225.79.522.474.638-.079.485-1.215.62-1.64-.389-3.829-.91-1.312-.329h-.182v.11l1.093 1.068 2.006 1.81 2.509 2.33.127.578-.322.455-.34-.049-2.205-1.657-.851-.747-1.926-1.62h-.128v.17l.444.649 2.345 3.521.122 1.08-.17.353-.608.213-.668-.122-1.374-1.925-1.415-2.167-1.143-1.943-.14.08-.674 7.254-.316.37-.729.28-.607-.461-.322-.747.322-1.476.389-1.924.315-1.53.286-1.9.17-.632-.012-.042-.14.018-1.434 1.967-2.18 2.945-1.726 1.845-.414.164-.717-.37.067-.662.401-.589 2.388-3.036 1.44-1.882.93-1.086-.006-.158h-.055L4.132 18.56l-1.13.146-.487-.456.061-.746.231-.243 1.908-1.312-.006.006z" fill="#D97757" fill-rule="nonzero"></path></svg></span>
+            <div><h4>Modèles Nestor</h4><ul><li>claude-opus-5-5 via claude-cli</li><li>secours sonnet-5-5 · gpt-6-sol</li><li>20 skills workspace</li></ul></div>
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="hermes-stack" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Modèles Hermes">
             <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M9.205 8.658v-2.26c0-.19.072-.333.238-.428l4.543-2.616c.619-.357 1.356-.523 2.117-.523 2.854 0 4.662 2.212 4.662 4.566 0 .167 0 .357-.024.547l-4.71-2.759a.797.797 0 00-.856 0l-5.97 3.473zm10.609 8.8V12.06c0-.333-.143-.57-.429-.737l-5.97-3.473 1.95-1.118a.433.433 0 01.476 0l4.543 2.617c1.309.76 2.189 2.378 2.189 3.948 0 1.808-1.07 3.473-2.76 4.163zM7.802 12.703l-1.95-1.142c-.167-.095-.239-.238-.239-.428V5.899c0-2.545 1.95-4.472 4.591-4.472 1 0 1.927.333 2.712.928L8.23 5.067c-.285.166-.428.404-.428.737v6.898zM12 15.128l-2.795-1.57v-3.33L12 8.658l2.795 1.57v3.33L12 15.128zm1.796 7.23c-1 0-1.927-.332-2.712-.927l4.686-2.712c.285-.166.428-.404.428-.737v-6.898l1.974 1.142c.167.095.238.238.238.428v5.233c0 2.545-1.974 4.472-4.614 4.472zm-5.637-5.303l-4.544-2.617c-1.308-.761-2.188-2.378-2.188-3.948A4.482 4.482 0 014.21 6.327v5.423c0 .333.143.571.428.738l5.947 3.449-1.95 1.118a.432.432 0 01-.476 0zm-.262 3.9c-2.688 0-4.662-2.021-4.662-4.519 0-.19.024-.38.047-.57l4.686 2.71c.286.167.571.167.856 0l5.97-3.448v2.26c0 .19-.07.333-.237.428l-4.543 2.616c-.619.357-1.356.523-2.117.523zm5.899 2.83a5.947 5.947 0 005.827-4.756C22.287 18.339 24 15.84 24 13.296c0-1.665-.713-3.282-1.998-4.448.119-.5.19-.999.19-1.498 0-3.401-2.759-5.947-5.946-5.947-.642 0-1.26.095-1.88.31A5.962 5.962 0 0010.205 0a5.947 5.947 0 00-5.827 4.757C1.713 5.447 0 7.945 0 10.49c0 1.666.713 3.283 1.998 4.448-.119.5-.19 1-.19 1.499 0 3.401 2.759 5.946 5.946 5.946.642 0 1.26-.095 1.88-.309a5.96 5.96 0 004.162 1.713z"></path></svg></span>
@@ -747,7 +814,7 @@
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="nestor-cron" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Autonomie Nestor">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-openclaw" /></svg>
-            <div><h4>Autonomie Nestor</h4><ul><li>heartbeat 30 min · 08h-22h30</li><li>5 jobs cron actifs</li><li>consolidation mémoire 23h</li></ul></div>
+            <div><h4>Autonomie Nestor</h4><ul><li>heartbeat 30 min · 08h-22h30</li><li>8 jobs cron récurrents</li><li>consolidation mémoire 23h</li></ul></div>
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="hermes-cron" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Autonomie Hermes">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-hermes-avatar" /></svg>
@@ -756,6 +823,10 @@
           </article><article class="catalog-card" data-node-id="openclaw-satellites" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Agents OpenClaw">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-openclaw" /></svg>
             <div><h4>Agents OpenClaw</h4><ul><li>ops</li><li>veille</li><li>cron</li><li>mypacer-ceo</li><li>model-lab</li></ul></div>
+            <span class="catalog-status status-active" title="active"></span>
+          </article><article class="catalog-card" data-node-id="pi" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Pi">
+            <span class="catalog-logo logo-text" style="--brand:#344054">π</span>
+            <div><h4>Pi</h4><p>CLI/TUI · harness minimaliste</p></div>
             <span class="catalog-status status-active" title="active"></span>
           </article></div>
     </section><section class="catalog-section">
@@ -769,7 +840,7 @@
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="openclaw-memory" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Mémoire Nestor">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-openclaw" /></svg>
-            <div><h4>Mémoire Nestor</h4><ul><li>MEMORY.md + 157 journaux</li><li>index FTS + vectoriel</li><li>11 512 transcripts</li></ul></div>
+            <div><h4>Mémoire Nestor</h4><ul><li>MEMORY.md + 222 journaux</li><li>index FTS + vectoriel</li><li>≈5 600 transcripts</li></ul></div>
             <span class="catalog-status status-active" title="active"></span>
           </article><article class="catalog-card" data-node-id="hermes-memory" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Mémoire Hermes">
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-hermes-avatar" /></svg>
@@ -817,6 +888,14 @@
             <svg class="catalog-logo logo-disc-html" viewBox="0 0 100 100" aria-hidden="true"><use href="#brand-mypacer" /></svg>
             <div><h4>MyPacer / DecaSaaS</h4><ul><li>Pilotage business</li><li>Prospection &amp; campagnes</li><li>Prod ops &amp; CLI dédiée</li></ul></div>
             <span class="catalog-status status-active" title="active"></span>
+          </article><article class="catalog-card" data-node-id="documents" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Documents iCloud">
+            <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M13.762 4.29a6.51 6.51 0 0 0-5.669 3.332 3.571 3.571 0 0 0-1.558-.36 3.571 3.571 0 0 0-3.516 3A4.918 4.918 0 0 0 0 14.796a4.918 4.918 0 0 0 4.92 4.914 4.93 4.93 0 0 0 .617-.045h14.42c2.305-.272 4.041-2.258 4.043-4.589v-.009a4.594 4.594 0 0 0-3.727-4.508 6.51 6.51 0 0 0-6.511-6.27z" fill="#3693F3" /></svg></span>
+            <div><h4>Documents iCloud</h4><ul><li>Miroir iCloud · NAS</li><li>RAG · MCP documents</li></ul></div>
+            <span class="catalog-status status-active" title="active"></span>
+          </article><article class="catalog-card" data-node-id="whatsapp" role="button" tabindex="0" aria-label="Mettre en valeur les relations de WhatsApp">
+            <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="#25D366" /></svg></span>
+            <div><h4>WhatsApp</h4><ul><li>wacli · miroir local</li><li>Suivi &amp; digest tech</li></ul></div>
+            <span class="catalog-status status-active" title="active"></span>
           </article></div>
     </section><section class="catalog-section">
       <div class="catalog-heading">
@@ -846,6 +925,10 @@
           </article><article class="catalog-card" data-node-id="github-actions" role="button" tabindex="0" aria-label="Mettre en valeur les relations de GitHub Actions">
             <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M10.984 13.836a.5.5 0 0 1-.353-.146l-.745-.743a.5.5 0 1 1 .706-.708l.392.391 1.181-1.18a.5.5 0 0 1 .708.707l-1.535 1.533a.504.504 0 0 1-.354.146zm9.353-.147l1.534-1.532a.5.5 0 0 0-.707-.707l-1.181 1.18-.392-.391a.5.5 0 1 0-.706.708l.746.743a.497.497 0 0 0 .706-.001zM4.527 7.452l2.557-1.585A1 1 0 0 0 7.09 4.17L4.533 2.56A1 1 0 0 0 3 3.406v3.196a1.001 1.001 0 0 0 1.527.85zm2.03-2.436L4 6.602V3.406l2.557 1.61zM24 12.5c0 1.93-1.57 3.5-3.5 3.5a3.503 3.503 0 0 1-3.46-3h-2.08a3.503 3.503 0 0 1-3.46 3 3.502 3.502 0 0 1-3.46-3h-.558c-.972 0-1.85-.399-2.482-1.042V17c0 1.654 1.346 3 3 3h.04c.244-1.693 1.7-3 3.46-3 1.93 0 3.5 1.57 3.5 3.5S13.43 24 11.5 24a3.502 3.502 0 0 1-3.46-3H8c-2.206 0-4-1.794-4-4V9.899A5.008 5.008 0 0 1 0 5c0-2.757 2.243-5 5-5s5 2.243 5 5a5.005 5.005 0 0 1-4.952 4.998A2.482 2.482 0 0 0 7.482 12h.558c.244-1.693 1.7-3 3.46-3a3.502 3.502 0 0 1 3.46 3h2.08a3.503 3.503 0 0 1 3.46-3c1.93 0 3.5 1.57 3.5 3.5zm-15 8c0 1.378 1.122 2.5 2.5 2.5s2.5-1.122 2.5-2.5-1.122-2.5-2.5-2.5S9 19.122 9 20.5zM5 9c2.206 0 4-1.794 4-4S7.206 1 5 1 1 2.794 1 5s1.794 4 4 4zm9 3.5c0-1.378-1.122-2.5-2.5-2.5S9 11.122 9 12.5s1.122 2.5 2.5 2.5 2.5-1.122 2.5-2.5zm9 0c0-1.378-1.122-2.5-2.5-2.5S18 11.122 18 12.5s1.122 2.5 2.5 2.5 2.5-1.122 2.5-2.5zm-13 8a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0zm2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0zm12 0c0 1.93-1.57 3.5-3.5 3.5a3.503 3.503 0 0 1-3.46-3.002c-.007.001-.013.005-.021.005l-.506.017h-.017a.5.5 0 0 1-.016-.999l.506-.017c.018-.002.035.006.052.007A3.503 3.503 0 0 1 20.5 17c1.93 0 3.5 1.57 3.5 3.5zm-1 0c0-1.378-1.122-2.5-2.5-2.5S18 19.122 18 20.5s1.122 2.5 2.5 2.5 2.5-1.122 2.5-2.5z" fill="#2088FF" /></svg></span>
             <div><h4>GitHub Actions</h4><p>CI/CD &amp; Pages</p></div>
+            <span class="catalog-status status-active" title="active"></span>
+          </article><article class="catalog-card" data-node-id="devbox" role="button" tabindex="0" aria-label="Mettre en valeur les relations de Devbox Incus">
+            <span class="catalog-logo logo-disc-html"><svg viewBox="0 0 24 24" color="#111111" aria-hidden="true"><path d="M10.15 8.98l1.647.951-5.756 3.345.005-1.911L10.15 8.98zm1.723-1.001l-1.553.902 1.548.893.005-1.795zM6.028 5.33L6.025 6.4l.543.316 3.602 2.079 1.632-.948-2.19-1.279-3.231-1.887-.351-.203-.002.852zm.072-.983l.359.209 6.321 3.65 5.258 3.037 5.858-3.405L11.956.943 6.1 4.347zm6.002 12.602l-.005 1.924 5.858-3.404.005-1.924-5.858 3.404zm-.077-9.009l-.005 1.922 5.94 3.428.005-1.92-5.94-3.43zm-10.13.945l4.075 2.352 4.031-2.342-4.075-2.353-4.031 2.343zM24 7.982l-5.858 3.404-.015 3.982 5.858-3.404L24 7.982zm-12.048 10.04l.003-1.073L7.6 14.436l-1.565-.903v.001l-.939-.542L.015 10.06.01 11.979l11.94 6.895.002-.852zm5.935-4.605l-5.922-3.411-5.853 3.401 5.917 3.414 5.858-3.404zm6.072-1.238l-11.862 6.864-.01 4.013 11.863-6.894.009-3.983zM11.944 21.27l.005-2.227L.01 12.148 0 16.162l11.94 6.895.004-1.787zM.021 9.802L1.6 8.885.025 7.976.021 9.802zm5.832-3.39l.024-1.636.001-.296L.099 7.848l1.647.951 4.107-2.387zm.041 4.951L1.749 8.97l-.46.267-1.195.695 5.795 3.345.005-1.914z" fill="#333333" /></svg></span>
+            <div><h4>Devbox Incus</h4><p>VM sur NAS · sessions de code</p></div>
             <span class="catalog-status status-active" title="active"></span>
           </article></div>
     </section>
